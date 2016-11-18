@@ -3,18 +3,18 @@
                                                 'Djangonize It!'
         Однофайлова утиліта для спрощення процесів роботи із зображеннями для Django розробників. Для використання
     потрібно розмістити файл програми в папку із зображеннями (images) static папки django-проекту. Дане рішення
-    одночасно служить підтримкою для рекомендованої структури побудови папок в django-проектах та дозволяє програмі
+    одночасно служить підтримкою для рекомендованої структури папок в django-проектах та дозволяє програмі
     та корисувачу уникнути додаткових дій по налаштуванню місця збереження зображень. Також варто мати
     встановлене розширення PyQt4 (якщо встановлена інша версія PyQt, можна спробувати замінити значення в import).
         Дана програма призначена для виконання наступних операцій:
         1. Пошук і заміна посилань зображень в фронтенд-файлах (CSS,HTML) на django-посинання. Пошук здійснюється
            на основі регулярних виразів. В програмі присутні базові регулярні вирази для CSS і HTML, які є
-           доступними для редагування користувачем (проте варто знати, що HTML вираз реалізовано через групи,
-           1-ша група - замінює текст до назви файлу, 2-га - після). При здійсненні заміни, файл не замінюється,
-           а створюється його копія (у папці із оригіналом) на випадок неточного регулярного виразу. Ім'я копії
-           формується як "[0-9]старе ім'я", що дозволяє простіше знаходити його у папці (він буде зверху, або
-           знизу). Крім того, реалізовано можливість відкриття папки із редагованими файлами напряму із програми,
-           відразу після пошуку.
+           доступними для редагування користувачем (проте, при редагуванін регулярного виразу для HTML варто 
+           знати, що він реалізований за допомогою груп, 1-ша група - замінює текст до назви файлу, 2-га - після). 
+           При здійсненні заміни, файл не замінюється, а створюється його копія (у папці із оригіналом) 
+           на випадок неточного регулярного виразу. Ім'я копії формується як "[0-9]старе ім'я", що дозволяє 
+           простіше знаходити його у папці (він буде зверху, або знизу). Крім того, реалізовано можливість 
+           відкриття папки із редагованими файлами напряму із програми, відразу після пошуку.
         2. Завантаження зображення із інтернету за посиланням (у папку images) та надання користувачу валідного
            django-посилання для його проекту. Всі згенеровані посилання архівуються ("db.txt" в папці
            розміщення програми). Також реалізовано класс, для зручної роботи із даним архівом із самої програми,
@@ -31,7 +31,7 @@
 
         Програма розроблена і протестована в середовищі Windows, але повинна працювати в Unix-based (не перевірено).
     Також реалізовано валідатори для запобігання найчастіщих помилок і допомоги користувачам які не читають info в
-    файлі. Усі налаштування за замовчуванням винесені в Parent (DjangoImages) клас.
+    файлі. Усі налаштування за замовчуванням винесені в Parent клас (DjangoImages).
 """
 """
     Info EN
@@ -39,14 +39,14 @@
         The purpose of this application is to simplify work with images for Django developers.
         For successful using, you should to install the app into "images" folder inside "static" folder of your
     django project (../static/../images/). This solution simultaneously supporting the recommended file
-    structure of django projects and allows to avoid additional user and program activities related with path setting for
-    image download. The installed PyQt4 is, also, needed.
+    structure of django projects and allows to avoid additional user and program activities related with path setting
+    for image download. The installed PyQt4 is, also, needed.
         The application allows to perform the next operations:
         1. Search and replacement image links on django-links at frontend (HTML, CSS) files. Search is RegEx driven.
            The application have default regular expressions for CSS and HTML files, which can be changed by user. HTML
            RegEx is realized through two groups (1st group - replace text before filename, 2nd - after).
            When you run the djangonization process for the file, it isn't replaced. The app creates a copy of file
-           at folder with original. Copy's name is forming as a "[0-9]oldname", which allow to simplify it searching at
+           at folder with original. Copy's name is forming as a "[0-9]old name", which allow to simplify it searching at
            folder (it was at the top or bottom). Also, created file can be opened from the program by os explorer.
         2. Download images from Internet by link (in images folder) and return valid link for user's django project.
            All results of operation are archiving (in "db.txt" at folder with program). Also, the class to simplify
@@ -63,7 +63,7 @@
 
         The program is developed and testing in Windows environment, but it should work at Unix-based systems
     (isn't checked). Also validators for most frequently errors and user helping are realised.
-        All default settings are placed at the Parent (DjangoImages) class.
+        All default settings are placed at the Parent class (DjangoImages).
 
 """
 
@@ -83,6 +83,7 @@ class DjangoImages(QtGui.QWidget):
     '''
     NOW = datetime.now()                # Constant for logs
     PATH = os.getcwd()                  # Constant for link generation and file management
+    FILE = "djangonizeit.pyw"           # Constant for internal restart (should be modified with app filename)
     size = 450, 340                     # Default size of application windows (width, height)
     position = 450, 150                 # Default position of application windows (horizontal,vertical)
     bFontSize = 10                      # Default font size for buttons
@@ -92,7 +93,6 @@ class DjangoImages(QtGui.QWidget):
     database = "db.txt"                 # Default name of database (for logs)
     defaultCSS = r'\.\..*/images/'      # Default pattern for re.sub function (DjangoFiles().djangonize())(lns 453/459)
     defaultHTML = r'src=\"(.*images/)(.*\.[a-z]{3})\"'  # Default pattern for re.sub function (lines 470/476)
-
 
     def __init__(self):
         super(DjangoImages, self).__init__()
@@ -125,9 +125,7 @@ class DjangoImages(QtGui.QWidget):
         nameGroupBox = QtGui.QGroupBox("Filename:")
         nameGroupBox.setLayout(nameLayout)
         buttonsGroupBox = QtGui.QGroupBox("Djangonizetion and Control:")
-        buttonsGroupBox.set
         buttonsGroupBox.setLayout(buttonsLayout)
-
 
         mainLayout = QtGui.QVBoxLayout()
         mainLayout.addWidget(linkGroupBox)
@@ -142,7 +140,7 @@ class DjangoImages(QtGui.QWidget):
         self.show()
 
     # Element constructors
-    def create_button(self, text, activity, tooltip=None, fontsize=int(bFontSize), style=str(bStyle)):
+    def create_button(self, text, activity, tooltip=None, fontsize=int(bFontSize), style=bStyle):
         button = QtGui.QPushButton(text, self)
         button.clicked.connect(activity)
         button.setToolTip(tooltip)
@@ -367,7 +365,6 @@ class DjangoFiles(DjangoImages):
     Djangonize links in CSS and HTML files, save copy of djangonized files in format [0-9]oldname, return name to user.
 
     '''
-
     def __init__(self):
         super(DjangoFiles, self).__init__()
         # Buttons (djangonizeButton, openButton and quitButton are inherited)
@@ -391,7 +388,7 @@ class DjangoFiles(DjangoImages):
 
         regexLayout = QtGui.QVBoxLayout()
         regexLayout.addWidget(self.regexLine)
-        regexGroupBox = QtGui.QGroupBox("RegEx to replace:")
+        regexGroupBox = QtGui.QGroupBox("Pattern for replacement:")
         regexGroupBox.setLayout(regexLayout)
 
         buttonsLayout = QtGui.QGridLayout()
@@ -422,13 +419,13 @@ class DjangoFiles(DjangoImages):
 
     def browse(self):
         # Browse file and choose a default RegEx according to file extension
-        file = QtGui.QFileDialog.getOpenFileName(self, "Find CSS or HTML", QtCore.QDir.currentPath())
+        openedFile = QtGui.QFileDialog.getOpenFileName(self, "Find CSS or HTML", QtCore.QDir.currentPath())
 
-        if file:
-            if self.fileComboBox.findText(file) == -1:
-                self.fileComboBox.addItem(file)
+        if openedFile:
+            if self.fileComboBox.findText(openedFile) == -1:
+                self.fileComboBox.addItem(openedFile)
 
-            self.fileComboBox.setCurrentIndex(self.fileComboBox.findText(file))
+            self.fileComboBox.setCurrentIndex(self.fileComboBox.findText(openedFile))
 
         filePath = str(self.fileComboBox.currentText())
 
@@ -446,24 +443,26 @@ class DjangoFiles(DjangoImages):
         newFilename = str(randint(0, 9)) + os.path.basename(filePath) # Filename where changes will be saved
 
         if filePath[-3:] == "css":
-            djPath = '..' + '/'.join(dirList) + '/'  # Path to images in django project
+            djPath = '../' + '/'.join(dirList) + '/'  # Path to images in django project
             nonDjPath = str(self.regexLine.displayText())  # Path to images in CSS for replacement
 
             if os.name == 'nt':
                 with open(os.path.dirname(filePath) + '/' + newFilename, 'w') as f:    # open new
                     content = open(filePath).read()                                    # copy data from old
+                    f.write('{% load staticfiles %}\n')                                # connect static files to CSS
                     f.write(re.sub(nonDjPath, djPath, content))                        # replace line and write in new
                     self.djangonizeLine.setText("New filename: " + newFilename)        # return name of new
 
             else:
                 with open(os.path.dirname(filePath) + '\\' + newFilename, 'w') as f:
                     content = open(filePath).read()
+                    f.write('{% load staticfiles %}\n')
                     f.write(re.sub(nonDjPath, djPath, content))
                     self.djangonizeLine.setText("New filename: " + newFilename)
 
         elif filePath[-3:] == "tml":
 
-            djPath = r"{% static '" + '/'.join(dirList) + '/' + "\g<2>" + " '%}" # Path to django-project images
+            djPath = "src=\"{% static '" + '/'.join(dirList) + '/' + "\g<2>" + "' %}\"" # Path to django-project images
             nonDjPath = str(self.regexLine.displayText())  # Path in CSS or HTML for replace
 
             if os.name == 'nt':
@@ -511,6 +510,10 @@ class MainMenu(DjangoFiles):
         self.browseButton.setText('Djangonize CSS or HTML file')
         self.browseButton.clicked.connect(self.browse())
 
+        self.restartButton = self.create_button('R', self.restart,
+                            tooltip="Temporary solution for issue with repainting of GroupBoxes")
+
+
         # Label
         self.mainLabel = self.create_label("Main menu", 16)
 
@@ -525,6 +528,8 @@ class MainMenu(DjangoFiles):
                                                     self.size[0]*0.48, self.size[1]*0.17))
         self.quitButton.setGeometry(QtCore.QRect(self.size[0]*0.75, self.size[1]*0.85,
                                                  self.size[0]*0.2, self.size[1]*0.1))
+        self.restartButton.setGeometry(QtCore.QRect(self.size[0]*0.01, self.size[1]*0.01,
+                                                 self.size[0]*0.05, self.size[1]*0.05))
 
         self.setWindowTitle('DjangonizeIt! - Main menu')
         self.resize(*self.size)
@@ -539,6 +544,10 @@ class MainMenu(DjangoFiles):
 
     def open_next(self):
         return History()
+
+    def restart(self):
+        # start new, sleep old
+        return os.system(self.FILE)
 
 class SortFilterHistory(QtGui.QSortFilterProxyModel):
     ''' Technical class for the History class. (is taken from pyQt templates)
