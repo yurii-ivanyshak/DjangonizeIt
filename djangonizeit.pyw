@@ -189,19 +189,19 @@ class DjangoImages(QtGui.QWidget):
             except IndexError:
                 QtGui.QMessageBox.warning(self, "InstallError",
                                           "Please, move the program inside your django project "
-                                          "(..\static\..\images)to solve the Error!")
+                                          "(../static/../images)to solve the Error!")
                 raise
             return dirList
 
     def djangonize(self):
         # Download image and return its django-link (Overridable)
         url = str(self.linkText.toPlainText())
-        if re.search(r'\.[a-z]{3}$', url):
+        if re.search(r'\.[a-z]{3}$', url):           # Validate link by type of file
             filename = str(self.nameLine.displayText())
 
             if len(filename) == 0:        # If the filename line is empty save the image with its basename
                 newFilename = os.path.basename(url)
-            else:                         # Else, save it with entered name
+            else:                         # Else, save it with entered name and original fileformat
                 newFilename = filename + os.path.basename(url)[-4:]
 
             dirList = self.dir_list()
