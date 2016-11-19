@@ -1,68 +1,7 @@
 """
-    Info UA
-                                                'Djangonize It!'
-        Однофайлова утиліта для спрощення процесів роботи із зображеннями для Django розробників. Для використання
-    потрібно розмістити файл програми в папку із зображеннями (images) static папки django-проекту. Дане рішення
-    одночасно служить підтримкою для рекомендованої структури папок в django-проектах та дозволяє програмі
-    та корисувачу уникнути додаткових дій по налаштуванню місця збереження зображень. Також варто мати
-    встановлене розширення PyQt4 (якщо встановлена інша версія PyQt, можна спробувати замінити значення в import).
-        Дана програма призначена для виконання наступних операцій:
-        1. Пошук і заміна посилань зображень в фронтенд-файлах (CSS,HTML) на django-посинання. Пошук здійснюється
-           на основі регулярних виразів. В програмі присутні базові регулярні вирази для CSS і HTML, які є
-           доступними для редагування користувачем (для випадків, коли назва папки із зображеннями у проекті не images).
-           При здійсненні заміни, файл не замінюється, а створюється його копія (у папці із оригіналом) 
-           на випадок неточного регулярного виразу. Ім'я копії формується як "[0-9]старе ім'я", що дозволяє 
-           простіше знаходити його у папці (він буде зверху, або знизу). Крім того, реалізовано можливість 
-           відкриття папки із редагованими файлами напряму із програми, відразу після пошуку.
-        2. Завантаження зображення із інтернету за посиланням (у папку images) та надання користувачу валідного
-           django-посилання для його проекту. Всі згенеровані посилання архівуються ("db.txt" в папці
-           розміщення програми). Також реалізовано класс, для зручної роботи із даним архівом із самої програми,
-           який підтримує сортування по імені/django-посиланні/даті. Пошук по архіву можна здійснювати як
-           за допомогою звичайних записів, так і регулярних виразів.
-        Програма написана в об'єкто-орієнтованому стилі. Кожен клас реалізований графічно через розширення PyQt4
-    (в програмі використано як і абсолютне позіционування елементів так і позиціонування через layout-и).
-        Структура наслідування є наступною:
-
-     PyQT Parent |          QtGui.QWidget                 QtGui.QSortFilterProxyModel
-     Parent      |           DjangoImages                     SortFilterHistory (використовується як екземпляр History)
-     1st Child   |   DjangoFiles      History (не наслідує конструктор)
-     2nd Child   |    MainMenu
-
-        Програма розроблена і протестована в середовищі Windows, але повинна працювати в Unix-based (не перевірено).
-    Також реалізовано валідатори для запобігання найчастіщих помилок і допомоги користувачам які не читають info в
-    файлі. Усі налаштування за замовчуванням винесені в Parent клас (DjangoImages).
-"""
-"""
     Info EN
                                     'Djangonize It!' (A single-file application)
-        The purpose of this application is to simplify work with images for Django developers.
-        For successful using, you should to install the app into "images" folder inside "static" folder of your
-    django project (../static/../images/). This solution simultaneously supporting the recommended file
-    structure of django projects and allows to avoid additional user and program activities related with path setting
-    for image download. The installed PyQt4 is, also, needed.
-        The application allows to perform the next operations:
-        1. Search and replacement image links on django-links at frontend (HTML, CSS) files. Search is RegEx driven.
-           The application have default regular expressions for CSS and HTML files, which can be changed by user (this
-           is necessary for cases when name of folder with images isn't "images").
-           When you run the djangonization process for the file, it isn't replaced. The app creates a copy of file
-           at folder with original. Copy's name is forming as a "[0-9]old name", which allow to simplify it searching at
-           folder (it was at the top or bottom). Also, created file can be opened from the program by os explorer.
-        2. Download images from Internet by link (in images folder) and return valid link for user's django project.
-           All results of operation are archiving (in "db.txt" at folder with program). Also, the class to simplify
-           work with logs is realized. It supports sorting by name/django link/date. Also, searching can be performed
-           by normal and RegEx strings.
-        The application is created with object-oriented style. Every class is realized graphically by PyQt4 extension
-    (both absolute and layout positioning are used).
-        The inheritance structure is the following:
-
-     PyQT Parent |          QtGui.QWidget                  QtGui.QSortFilterProxyModel
-     Parent      |           DjangoImages                       SortFilterHistory (used as an example for the History)
-     1st Child   |   DjangoFiles      History (closed __init__)
-     2nd Child   |    MainMenu
-
-        The program is developed and testing in Windows environment, but it should work at Unix-based systems
-    (isn't checked). Also validators for most frequently errors and user helping are realised.
-        All default settings are placed at the Parent class (DjangoImages).
+        More compact and user friendly version.
 
 """
 
@@ -74,6 +13,49 @@ from datetime import datetime
 from random import randint
 from PyQt4 import QtGui, QtCore
 
+class Welcome(QtGui.QWidget):
+    welcomeText = [
+                   ["Hello, I'm UX version of DjangonizeIt and I'm user friendly!", "Move me into the 'images' folder "
+                    "inside the 'static' folder\nof your django project (../static/../images/) and \n"
+                    "I will perform a lot of routine work instead of you!"],
+                   ["I'm able to:", "1. Replace non django links in your HTML and CSS files on django links.\n"
+                                    "\tChoose tab 'Files' if you need this\n"
+                                    "2. Download your images from web and return you django links for them.\n"
+                                    "\tChoose tab 'Images' if you need this\n"
+                                    "3. Remember information about every image which I downloaded for you!\n"
+                                    "\tChoose tab 'Images History' if you need this info\n" ],
+                   ["My hobby:", "Hide and seek"]
+                  ]
+    def __init__(self):
+        super().__init__()
+
+        self.view()
+        self.show()
+
+    def view(self):
+        helloGroupBox, abilityGroupBox, hobbyGroupBox = map(self.welcome_box, self.welcomeText)
+
+        mainLayout = QtGui.QVBoxLayout()
+        mainLayout.addWidget(helloGroupBox)
+        mainLayout.addWidget(abilityGroupBox)
+        mainLayout.addWidget(hobbyGroupBox)
+        self.setLayout(mainLayout)
+
+    def welcome_box(self,text,fontsize=9, style="color: rgb(12, 23, 88)"):
+        #Transfor list to GroupBox
+        textLabel = QtGui.QLabel(text[1], self)
+        font = QtGui.QFont()
+        font.setPointSize(fontsize)
+        textLayout = QtGui.QGridLayout()
+        textLabel.setFont(font)
+        textLayout.addWidget(textLabel, 0, 0)
+        blockGroupBox = QtGui.QGroupBox(text[0])
+        blockGroupBox.setFont(font)
+        blockGroupBox.setLayout(textLayout)
+        textLabel.setStyleSheet(style)
+        blockGroupBox.setStyleSheet(style)
+        return blockGroupBox
+
 
 class DjangoImages(QtGui.QWidget):
     ''' Parent class of application (contains elements constructors and default variables for other classes).
@@ -83,8 +65,6 @@ class DjangoImages(QtGui.QWidget):
     NOW = datetime.now()                # Constant for logs
     PATH = os.getcwd()                  # Constant for link generation and file management
     FILE = "djangonizeit.pyw"           # Constant for internal restart (should be modified with app filename)
-    size = 450, 340                     # Default size of application windows (width, height)
-    position = 450, 150                 # Default position of application windows (horizontal,vertical)
     bFontSize = 10                      # Default font size for buttons
     bStyle = "color: rgb(0, 85, 255);"  # Default stylesheet for buttons
     lFontSize = 10                      # Default font size for labels
@@ -99,14 +79,14 @@ class DjangoImages(QtGui.QWidget):
         self.djangonizeButton = self.create_button("Djangonize It!", self.djangonize,
                                             tooltip="Download image,return django link, log the result")
         self.quitButton = self.create_button('Quit', self.quit_app(), tooltip="Close All Windows")
-        self.openButton = self.create_button('History', self.open_next(), tooltip="Open window with logs")
+        self.emptyLabel = self.create_label("                   ")
 
         # Lines
         self.linkText = self.create_text_edit()
         self.nameLine = self.create_line_edit()
         self.djangoLine = self.create_line_edit()
 
-    def __call__(self):
+    #def __call__(self):
         # Give the ability to be opened outside. Contains information about positioning of elements on windows
         linkLayout = QtGui.QGridLayout()
         linkLayout.addWidget(self.linkText, 0, 0)
@@ -116,14 +96,14 @@ class DjangoImages(QtGui.QWidget):
         buttonsLayout = QtGui.QGridLayout()
         buttonsLayout.addWidget(self.djangonizeButton, 0, 3)
         buttonsLayout.addWidget(self.quitButton, 2, 5)
-        buttonsLayout.addWidget(self.openButton, 2, 0)
+        buttonsLayout.addWidget(self.emptyLabel, 2, 0)
         buttonsLayout.addWidget(self.djangoLine, 1, 3)
 
         linkGroupBox = QtGui.QGroupBox("URL:")
         linkGroupBox.setLayout(linkLayout)
         nameGroupBox = QtGui.QGroupBox("Filename:")
         nameGroupBox.setLayout(nameLayout)
-        buttonsGroupBox = QtGui.QGroupBox("Djangonizetion and Control:")
+        buttonsGroupBox = QtGui.QGroupBox("Djangonization and Control buttons:")
         buttonsGroupBox.setLayout(buttonsLayout)
 
         mainLayout = QtGui.QVBoxLayout()
@@ -134,9 +114,9 @@ class DjangoImages(QtGui.QWidget):
         self.setLayout(mainLayout)
 
         self.setWindowTitle("Djangonize image from Web")
-        self.resize(*self.size)
-        self.move(*self.position)
-        self.show()
+        #self.resize(*self.size)
+        #self.move(*self.position)
+        #self.show()
 
     # Element constructors
     def create_button(self, text, activity, tooltip=None, fontsize=int(bFontSize), style=bStyle):
@@ -221,10 +201,6 @@ class DjangoImages(QtGui.QWidget):
         else:
             QtGui.QMessageBox.warning(self, "Link", "You enter a wrong link!")
 
-    def open_next(self):
-        # Overridable method for transitions
-        return History()
-
     def quit_app(self):
         # Overridable method
         return QtCore.QCoreApplication.instance().quit
@@ -271,7 +247,7 @@ class History(DjangoImages):
         self.fromDateEdit.dateChanged.connect(self.date_filter_changed)
         self.toDateEdit.dateChanged.connect(self.date_filter_changed)
 
-    def __call__(self):
+    #def __call__(self):
         self.proxyView = QtGui.QTreeView()                             # Table view
         self.proxyView.setRootIsDecorated(False)
         self.proxyView.setAlternatingRowColors(True)
@@ -311,9 +287,9 @@ class History(DjangoImages):
 
         self.setLayout(mainLayout)
         self.setWindowTitle("History of djangonized images")
-        self.resize(*self.size)
-        self.move(*self.position)
-        self.show()
+        #self.resize(*self.size)
+        #self.move(*self.position)
+        #self.show()
 
     def text_filter_changed(self):
         # Filtering by filter patterns (Normal, RegEx)
@@ -352,11 +328,9 @@ class History(DjangoImages):
                         line = line.split(',')
                         self.add_log(table, line[0], line[1],           #name,link
                                      QtCore.QDateTime(QtCore.QDate(int(line[2]), int(line[3]), int(line[4])),  # Date
-                                                                   QtCore.QTime(int(line[5]), int(line[6]))))  # Time
+                                                                   QtCore.QTime(int(line[5]), int(line[6]))))  # Time'
         except FileNotFoundError:
-            QtGui.QMessageBox.information(self, "HistoryError",
-                                      "You haven't any history")
-            raise
+            pass
         return table
 
     def open_folder(self):
@@ -370,20 +344,24 @@ class DjangoFiles(DjangoImages):
 
     '''
     def __init__(self):
-        super(DjangoFiles, self).__init__()
+        super(DjangoImages, self).__init__()
         # Buttons (djangonizeButton, openButton and quitButton are inherited)
-        self.djangonizeButton.setToolTip("Make a copy where pattern is replaced by django links, return name of copy")
+        self.djangonizeButton = self.create_button("Djangonize It!", self.djangonize,
+                                 tooltip="Make a copy where pattern is replaced by django links, return name of copy")
+
         self.browseButton = self.create_button("Browse...", self.browse)
-        self.openButton.setText('Open It!')
-        self.openButton.setToolTip("Open djangonized file by default program")
+
+        self.openButton = self.create_button("Open It!", self.open_file,
+                                             tooltip="Open djangonized file by default program")
+        self.quitButton = self.create_button('Quit', self.quit_app(), tooltip="Close All Windows")
 
         # Lines
         self.regexLine = self.create_line_edit()
-        self.regexLine.setText("Choose CSS or HTML file!")
+        self.regexLine.setText("Choose a CSS or HTML file!")
         self.djangonizeLine = self.create_line_edit()                    # Line for djangonized filename returning
         self.fileComboBox = self.create_combo_box(QtCore.QDir.currentPath())
 
-    def __call__(self):
+    #def __call__(self):
         fileLayout = QtGui.QHBoxLayout()
         fileLayout.addWidget(self.fileComboBox,4)
         fileLayout.addWidget(self.browseButton,1)
@@ -409,10 +387,10 @@ class DjangoFiles(DjangoImages):
         mainLayout.addWidget(buttonsGroupBox)
         self.setLayout(mainLayout)
 
-        self.setWindowTitle("Djangonize CSS or HTML file")
-        self.resize(*self.size)
-        self.move(*self.position)
-        self.show()
+        #self.setWindowTitle("Djangonize CSS or HTML file")
+        #self.resize(*self.size)
+        #self.move(*self.position)
+        #self.show()
 
     def create_combo_box(self, text=""):
         # Additional element constructor
@@ -423,7 +401,7 @@ class DjangoFiles(DjangoImages):
 
     def browse(self):
         # Browse file and choose a default RegEx according to file extension
-        openedFile = QtGui.QFileDialog.getOpenFileName(self, "Find CSS or HTML", QtCore.QDir.currentPath())
+        openedFile = QtGui.QFileDialog.getOpenFileName(self, "Find a CSS or HTML", QtCore.QDir.currentPath())
 
         if openedFile:
             if self.fileComboBox.findText(openedFile) == -1:
@@ -438,11 +416,11 @@ class DjangoFiles(DjangoImages):
         elif filePath[-3:] == "tml":
             self.regexLine.setText(self.defaultHTML)
         else:
-            self.regexLine.setText("Wrong file. Choose CSS or HTML!")
+            self.regexLine.setText("Wrong file. Choose a CSS or HTML!")
 
     def djangonize(self):
         # Method which make files more djangonized! (Overridden method for djangonizeButton)
-        filePath = str(self.fileComboBox.currentText()) # Path to file from fileComboBox
+        filePath = self.fileComboBox.currentText() # Path to file from fileComboBox
         dirList = self.dir_list()         # DjangonizeImage inherited method which returns folders before static folder
         newFilename = str(randint(0, 9)) + os.path.basename(filePath) # Filename where changes will be saved
 
@@ -491,67 +469,59 @@ class DjangoFiles(DjangoImages):
         else:
             QtGui.QMessageBox.warning(self,'OpenError', 'Djangonize file before opening')
 
-    def open_next(self):
-        # Overridden method for openButton
-        return self.open_file
 
 
-class MainMenu(DjangoFiles):
+class Main(QtGui.QDialog):
     """ Start window of the application
     Call the components of the application when buttons is clicking.
 
     """
+    size = 450, 340                     # Default size of application windows (width, height)
+    position = 450, 150                 # Default position of application windows (horizontal,vertical)
+
     def __init__(self):
-        super(MainMenu, self).__init__()
+        super(Main, self).__init__()
         # Buttons (djangonizeButton, openButton, browseButton and quitButton are inherited)
-        self.djangonizeButton.setText('Djangonize image from Web')
-        self.djangonizeButton.clicked.connect(self.djangonize())
-        self.djangonizeButton.setToolTip(None)
 
-        self.openButton.setText('History of djangonized images')
-        self.openButton.setToolTip(None)
+        tabWidget = QtGui.QTabWidget()
+        tabWidget.addTab(Welcome(), "Welcome")
+        tabWidget.addTab(DjangoFiles(), "Files")
+        tabWidget.addTab(DjangoImages(), "Images")
+        tabWidget.addTab(History(), "Images History")
 
-        self.browseButton.setText('Djangonize CSS or HTML file')
-        self.browseButton.clicked.connect(self.browse())
+        mainLayout = QtGui.QVBoxLayout()
+        mainLayout.addWidget(tabWidget)
+        self.setLayout(mainLayout)
 
-        self.restartButton = self.create_button('R', self.restart,
-                            tooltip="Temporary solution for issue with repainting of GroupBoxes")
-
-
-        # Label
-        self.mainLabel = self.create_label("Main menu", 16)
-
-        # Location of components (Absolute). Here the problem with window resizing is solved.
-        self.mainLabel.setGeometry(QtCore.QRect(self.size[0]*0.43, self.size[1]*0.03,  # Location (horizontal,vertical)
-                                                self.size[0]*0.3, self.size[1]*0.15))  # Size of element (width, height)
-        self.djangonizeButton.setGeometry(QtCore.QRect(self.size[0]*0.1, self.size[1]*0.20,
-                                                           self.size[0]*0.48, self.size[1]*0.17))
-        self.openButton.setGeometry(QtCore.QRect(self.size[0] * 0.1, self.size[1] * 0.4,
-                                                 self.size[0] * 0.48, self.size[1] * 0.17))
-        self.browseButton.setGeometry(QtCore.QRect(self.size[0]*0.1, self.size[1]*0.6,
-                                                    self.size[0]*0.48, self.size[1]*0.17))
-        self.quitButton.setGeometry(QtCore.QRect(self.size[0]*0.75, self.size[1]*0.85,
-                                                 self.size[0]*0.2, self.size[1]*0.1))
-        self.restartButton.setGeometry(QtCore.QRect(self.size[0]*0.01, self.size[1]*0.01,
-                                                 self.size[0]*0.05, self.size[1]*0.05))
-
-        self.setWindowTitle('DjangonizeIt! - Main menu')
+        self.setWindowTitle('DjangonizeIt! - A single-file application')
         self.resize(*self.size)
         self.move(*self.position)
 
-    # Overridden methods
-    def djangonize(self):
-        return DjangoImages()
 
-    def browse(self):
-        return DjangoFiles()
+        self.minimizeAction = QtGui.QAction("Minimize", self, triggered=self.hide)
+        self.restoreAction = QtGui.QAction("Restore", self, triggered=self.show)
+        self.quitAction = QtGui.QAction("Quit", self, triggered=QtGui.qApp.quit)
 
-    def open_next(self):
-        return History()
+        self.create_tray_icon()
+        self.trayIcon.show()
 
-    def restart(self):
-        # start new, sleep old
-        return os.system(self.FILE)
+    def create_tray_icon(self):
+        self.trayIconMenu = QtGui.QMenu(self)
+        self.trayIconMenu.addAction(self.minimizeAction)
+        self.trayIconMenu.addAction(self.restoreAction)
+        self.trayIconMenu.addSeparator()
+        self.trayIconMenu.addAction(self.quitAction)
+
+        self.trayIcon = QtGui.QSystemTrayIcon(self)
+        self.trayIcon.setContextMenu(self.trayIconMenu)
+
+    def closeEvent(self, event):
+        #intercepts close event (control panel), hide Main and show icon message
+        if self.trayIcon.isVisible():
+            self.hide()            #hide Main
+            self.trayIcon.showMessage("Tray icon without icon", "Ha-ha, I'm here! :)")
+            event.ignore()
+
 
 class SortFilterHistory(QtGui.QSortFilterProxyModel):
     ''' Technical class for the History class. (is taken from pyQt templates)
@@ -598,6 +568,6 @@ class SortFilterHistory(QtGui.QSortFilterProxyModel):
 if __name__ == '__main__':
 
     app = QtGui.QApplication(sys.argv)
-    menu = MainMenu()
+    menu = Main()
     menu.show()
     sys.exit(app.exec_())
