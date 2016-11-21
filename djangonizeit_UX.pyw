@@ -614,17 +614,56 @@ class DjangoTemplates(DjangoFiles):
             self.fileComboBox.setCurrentIndex(self.fileComboBox.findText(openedDir))
 
     def find_templates(self):
-        directory = self.fileComboBox.currentText()
+        # Finding templates in choosed dir and return dict(name: [name, dir/name])
+        dirPath = self.fileComboBox.currentText()
+        directory = os.path.split(dirPath)[1]
         exceptList = self.regexLine.displayText()
-        directoryList = os.listdir(directory)
 
+        directoryList = os.listdir(dirPath)
         templates = list(filter(lambda x: x.endswith('.html') if x not in exceptList else None, directoryList))
         self.djangonizeText.setText('I found {} template(s) for djangonization!'.format(len(templates)))
-        tempDict = {}
-        for template in templates:
-            pass
+        tempDict = {template: '/'.join([directory, template]) for template in templates}
+        return tempDict
 
-    def open_file(self):
+    def find_views(self):
+        dirPath = self.fileComboBox.currentText()
+        limit = 0
+        while 'views.py' not in os.listdir(dirPath) or limit < 3:
+            dirPath = os.path.split(dirPath)[0]           # level up!
+            limit+=1
+        else:
+            assert(limit < 3)
+            with open('views.py') as viewsfile:
+                viewsText = viewsfile.read()
+                views = re.findall(r'[\'\"](\S+\/\S+\.html)[\'\"]', viewsText)
+                return views, dirPath
+
+    def find_create_urls(self):
+        dirPath = self.find_views()[1]
+        if 'urls.py' not in os.listdir(dirPath):
+            with open(os.path.join(dirPath, 'views.py'), 'w') as urlsfile:
+                urlsfile.write("from django.conf.urls import url\n\n"
+                               "from . import views\n\n"
+                               "urlpatterns = [\n"
+                               "]")
+            self.djangonizeText.setText('\n'.join([self.djangonizeText.toPlainText(),
+                                                   'I created the urls.py in {}'.format(dirPath)]))
+    def djangonize(self):
+        tempDict = self.find_templates()
+        views, dirPath = self.find_views()
+
+        newViews = []
+        for key in tempDict:
+            if key not in views:
+                newViews.append(key[:-5])
+                with open (os.path.join(dirPath, 'views.py'), 'a') as viewsfile:
+                    viewsfile.write("def {} (request):\n"
+                                    "return render(request, '{}')\n\n".format(key[:-5], tempDict[key]))
+                self.djangonizeText.setText('\n'.join([self.djangonizeText.toPlainText(),
+                                                       'I added the {} view to views.py'.format(key)]))
+
+        self.find_create_urls()
+
         pass
 
 
