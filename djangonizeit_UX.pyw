@@ -50,29 +50,31 @@ class Welcome(QtGui.QWidget):
                    ["Hello, I'm UX version of DjangonizeIt! and I'm user friendly!", "Move me into the 'images' folder "
                     "inside the 'static' folder\nof your django project (../static/../images/) and \n"
                     "I will perform a lot of routine work instead of you!"],
-                   ["I'm able to:", "1. Replace non django links in your HTML and CSS files on django links.\n"
-                                    "\tChoose tab 'Files' if you need this\n"
-                                    "2. Download your images from web and return you django links for them.\n"
+                   ["I'm able to:", "1. Download your images from web and return you django links for them.\n"
                                     "\tChoose tab 'Images' if you need this\n"
-                                    "3. Remember information about every image which I downloaded for you!\n"
-                                    "\tChoose tab 'Images History' if you need this info\n" ],
+                                    "2. Remember information about every image which I downloaded for you!\n"
+                                    "\tChoose tab 'Images History' if you need this info\n"
+                                    "3. Replace non django links in your HTML and CSS files on django links.\n"
+                                    "\tChoose tab 'Files' if you need this\n"],
                    ["My hobby:", "Hide and seek"]
                   ]
     def __init__(self):
         super().__init__()
-        # GroupBoxes
-        self.helloGroupBox, self.abilityGroupBox, self.hobbyGroupBox = map(self._welcome_box, self.welcomeText)
-
         self._view()
         self.show()
 
     def _view(self):
         # Contains information about positioning of elements at window
+        self._groupboxes()
+
         mainLayout = QtGui.QVBoxLayout()
         mainLayout.addWidget(self.helloGroupBox)
         mainLayout.addWidget(self.abilityGroupBox)
         mainLayout.addWidget(self.hobbyGroupBox)
         self.setLayout(mainLayout)
+
+    def _groupboxes(self):
+        self.helloGroupBox, self.abilityGroupBox, self.hobbyGroupBox = map(self._welcome_box, self.welcomeText)
 
     def _welcome_box(self, text, fontsize=9, style="color: rgb(10, 15, 150)"):
         #Transform list to GroupBox
@@ -106,11 +108,28 @@ class DjangoImages(QtGui.QWidget):
 
     def __init__(self):
         super().__init__()
+        self._view()
+
+    def _view(self):
+        # Contains information about positioning of elements at window
+        self._elements()
+
+        self._linkgroupbox()
+        self._namegroupbox()
+        self._buttonsgroupbox()
+
+        mainLayout = QtGui.QVBoxLayout()
+        mainLayout.addWidget(self.linkGroupBox)
+        mainLayout.addWidget(self.nameGroupBox)
+        mainLayout.addWidget(self.buttonsGroupBox)
+        self.setLayout(mainLayout)
+
+    def _elements(self):
         # Buttons
         self.djangonizeButton = self.create_button("Djangonize It!", self.djangonize,
-                                            tooltip="Download image,return django link, log the result")
+                                                   tooltip="Download image,return django link, log the result")
         self.quitButton = self.create_button('Quit', self.quit_app(), tooltip="Close All Windows")
-        self.emptyLabel = self.create_label("\t     ")                # Filler for buttonsLayout
+        self.emptyLabel = self.create_label("\t     ")  # Filler for buttonsLayout
 
         # Lines
         self.linkText = self.create_text_edit(tooltip="Enter the image URL here. "
@@ -119,33 +138,32 @@ class DjangoImages(QtGui.QWidget):
                                                       "Like: image")
         self.djangoLine = self.create_line_edit(tooltip="A django link will arise here after djangonization")
 
-        self._view()
-
-    def _view(self):
-        # Contains information about positioning of elements at window
+    def _linkgroupbox(self):
         linkLayout = QtGui.QGridLayout()
         linkLayout.addWidget(self.linkText, 0, 0)
+
+        self.linkGroupBox = QtGui.QGroupBox("URL:")
+        self.linkGroupBox.setLayout(linkLayout)
+        return  self.linkGroupBox
+
+    def _namegroupbox(self):
         nameLayout = QtGui.QGridLayout()
         nameLayout.addWidget(self.nameLine, 1, 0)
 
+        self.nameGroupBox = QtGui.QGroupBox("Filename:")
+        self.nameGroupBox.setLayout(nameLayout)
+        return  self.nameGroupBox
+
+    def _buttonsgroupbox(self):
         buttonsLayout = QtGui.QGridLayout()
         buttonsLayout.addWidget(self.djangonizeButton, 0, 3)
         buttonsLayout.addWidget(self.quitButton, 2, 5)
         buttonsLayout.addWidget(self.emptyLabel, 2, 0)
         buttonsLayout.addWidget(self.djangoLine, 1, 3)
 
-        linkGroupBox = QtGui.QGroupBox("URL:")
-        linkGroupBox.setLayout(linkLayout)
-        nameGroupBox = QtGui.QGroupBox("Filename:")
-        nameGroupBox.setLayout(nameLayout)
-        buttonsGroupBox = QtGui.QGroupBox("Djangonization and Control buttons:")
-        buttonsGroupBox.setLayout(buttonsLayout)
-
-        mainLayout = QtGui.QVBoxLayout()
-        mainLayout.addWidget(linkGroupBox)
-        mainLayout.addWidget(nameGroupBox)
-        mainLayout.addWidget(buttonsGroupBox)
-        self.setLayout(mainLayout)
+        self.buttonsGroupBox = QtGui.QGroupBox("Djangonization and Control buttons:")
+        self.buttonsGroupBox.setLayout(buttonsLayout)
+        return  self.buttonsGroupBox
 
     # Element constructors
     def create_button(self, text, activity, tooltip=None, fontsize=int(bFontSize), style=bStyle):
@@ -250,59 +268,36 @@ class History(DjangoImages):
 
     '''
     def __init__(self):
-        super(DjangoImages, self).__init__()            # Closed from parent constructor attributes
-        self.proxyModel = SortFilterHistory(self)       # Technical class (PyQt template)
-        self.proxyModel.setDynamicSortFilter(True)
-
-        # Buttons
-        self.openButton = self.create_button('Folder', self.open_folder, tooltip="Open folder with djangonized images")
-        self.quitButton = self.create_button('Quit', self.quit_app(), tooltip="Close All Windows")
-        self.emptyLabel = QtGui.QLabel()                # Filler for proxyLayout
-
-        self._search_box()
-        self._date_boxes()
-        self._view()
+        super().__init__()
 
     def _view(self):
         # Contains information about positioning of elements at window
-        self.proxyView = QtGui.QTreeView()                             # Table view
-        self.proxyView.setRootIsDecorated(False)
-        self.proxyView.setAlternatingRowColors(True)
-        self.proxyView.setModel(self.proxyModel)                       # Setting of table for the view
-        self.proxyView.setSortingEnabled(True)
-        self.proxyView.sortByColumn(1, QtCore.Qt.AscendingOrder)
-        self.proxyModel.setSourceModel(self.create_log_table())        # Setting of table for the window
-
-        self.proxyView.setColumnWidth(0, 75)
-        self.proxyView.setColumnWidth(1, 240)
+        self._elements()
 
         self.text_filter_changed()
         self.date_filter_changed()
 
-        proxyLayout = QtGui.QGridLayout()
-        proxyLayout.addWidget(self.proxyView, 0, 0, 1, 3)
-        proxyLayout.addWidget(self.filterPatternLabel, 1, 0)
-        proxyLayout.addWidget(self.filterPatternLineEdit, 1, 1)
-        proxyLayout.addWidget(self.filterSyntaxComboBox, 1, 2)
-        proxyLayout.addWidget(self.fromLabel, 3, 0)
-        proxyLayout.addWidget(self.fromDateEdit, 3, 1, 1, 2)
-        proxyLayout.addWidget(self.toLabel, 4, 0)
-        proxyLayout.addWidget(self.toDateEdit, 4, 1, 1, 2)
-        proxyGroupBox = QtGui.QGroupBox("Sort/Filter Links")
-        proxyGroupBox.setLayout(proxyLayout)
-
-        buttonsLayout = QtGui.QHBoxLayout()
-        buttonsLayout.addWidget(self.openButton, 1)
-        buttonsLayout.addWidget(self.emptyLabel, 3)
-        buttonsLayout.addWidget(self.quitButton, 1)
-        buttonsGroupBox = QtGui.QGroupBox("Control buttons")
-        buttonsGroupBox.setLayout(buttonsLayout)
+        self._proxygroupbox()
+        self._buttonsgroupbox()
 
         mainLayout = QtGui.QVBoxLayout()
-        mainLayout.addWidget(proxyGroupBox)
-        mainLayout.addWidget(buttonsGroupBox)
+        mainLayout.addWidget(self.proxyGroupBox)
+        mainLayout.addWidget(self.buttonsGroupBox)
 
         self.setLayout(mainLayout)
+
+    def _elements(self):
+        self.proxyModel = SortFilterHistory(self)       # Technical class (PyQt template)
+        self.proxyModel.setDynamicSortFilter(True)
+
+        self._proxy()
+        self._search_box()
+        self._date_boxes()
+
+        # Buttons
+        self.openButton = self.create_button('Folder', self.open_folder, tooltip="Open folder with djangonized images")
+        self.quitButton = self.create_button('Quit', self.quit_app(), tooltip="Close All Windows")
+        self.emptyLabel = QtGui.QLabel()  # Filler for proxyLayout
 
     def _search_box(self):
         # Search
@@ -333,6 +328,44 @@ class History(DjangoImages):
         self.filterSyntaxComboBox.currentIndexChanged.connect(self.text_filter_changed)
         self.fromDateEdit.dateChanged.connect(self.date_filter_changed)
         self.toDateEdit.dateChanged.connect(self.date_filter_changed)
+
+    def _proxy(self):
+        self.proxyView = QtGui.QTreeView()  # Table view
+        self.proxyView.setRootIsDecorated(False)
+        self.proxyView.setAlternatingRowColors(True)
+        self.proxyView.setModel(self.proxyModel)  # Setting of table for the view
+        self.proxyView.setSortingEnabled(True)
+        self.proxyView.sortByColumn(1, QtCore.Qt.AscendingOrder)
+        self.proxyModel.setSourceModel(self.create_log_table())  # Setting of table for the window
+
+        self.proxyView.setColumnWidth(0, 75)
+        self.proxyView.setColumnWidth(1, 240)
+
+    def _proxygroupbox(self):
+        proxyLayout = QtGui.QGridLayout()
+        proxyLayout.addWidget(self.proxyView, 0, 0, 1, 3)
+        proxyLayout.addWidget(self.filterPatternLabel, 1, 0)
+        proxyLayout.addWidget(self.filterPatternLineEdit, 1, 1)
+        proxyLayout.addWidget(self.filterSyntaxComboBox, 1, 2)
+        proxyLayout.addWidget(self.fromLabel, 3, 0)
+        proxyLayout.addWidget(self.fromDateEdit, 3, 1, 1, 2)
+        proxyLayout.addWidget(self.toLabel, 4, 0)
+        proxyLayout.addWidget(self.toDateEdit, 4, 1, 1, 2)
+
+        self.proxyGroupBox = QtGui.QGroupBox("Sort/Filter Links")
+        self.proxyGroupBox.setLayout(proxyLayout)
+        return  self.proxyGroupBox
+
+
+    def _buttonsgroupbox(self):
+        buttonsLayout = QtGui.QHBoxLayout()
+        buttonsLayout.addWidget(self.openButton, 1)
+        buttonsLayout.addWidget(self.emptyLabel, 3)
+        buttonsLayout.addWidget(self.quitButton, 1)
+
+        self.buttonsGroupBox = QtGui.QGroupBox("Control buttons")
+        self.buttonsGroupBox.setLayout(buttonsLayout)
+        return self.buttonsGroupBox
 
     def text_filter_changed(self):
         # Filtering by filter patterns (Normal, RegEx)
@@ -387,49 +420,62 @@ class DjangoFiles(DjangoImages):
 
     '''
     def __init__(self):
-        super(DjangoImages, self).__init__()
+        super().__init__()
+
+    def _view(self):
+        # Contains information about positioning of elements at window
+        self._elements()
+        self._filegroupbox()
+        self._regexgroupbox()
+        self._buttonsgroupbox()
+
+        mainLayout = QtGui.QVBoxLayout()
+        mainLayout.addWidget(self.fileGroupBox)
+        mainLayout.addWidget(self.regexGroupBox)
+        mainLayout.addWidget(self.buttonsGroupBox)
+        self.setLayout(mainLayout)
+
+    def _elements(self):
         # Buttons
-        self.djangonizeButton = self.create_button("Djangonize It!", self.djangonize,
-                        tooltip="Make a copy of file where pattern is replaced by django links, return name of copy")
         self.browseButton = self.create_button("Browse...", self.browse)
+        self.djangonizeButton = self.create_button("Djangonize It!", self.djangonize,
+                         tooltip="Make a copy of file where pattern is replaced by django links, return name of copy")
+        self.djangonizeLine = self.create_line_edit(
+                                        tooltip=" A name of changed file will arise here after djangonization")
         self.openButton = self.create_button("Open It!", self.open_file,
-                                             tooltip="Open djangonized file by default program")
+                                         tooltip="Open djangonized file by default program")
         self.quitButton = self.create_button('Quit', self.quit_app(), tooltip="Close All Windows")
 
         # Lines
         self.regexLine = self.create_line_edit()
         self.regexLine.setText("Choose a CSS or HTML file!")
-        self.djangonizeLine = self.create_line_edit(tooltip=" A name of changed file will arise here after djangonization")
         self.fileComboBox = self.create_combo_box(QtCore.QDir.currentPath())
 
-        self._view()
+    def _filegroupbox(self):
 
-    def _view(self):
-        # Contains information about positioning of elements at window
         fileLayout = QtGui.QHBoxLayout()
-        fileLayout.addWidget(self.fileComboBox,4)
-        fileLayout.addWidget(self.browseButton,1)
-        fileGroupBox = QtGui.QGroupBox("Browse file:")
-        fileGroupBox.setLayout(fileLayout)
+        fileLayout.addWidget(self.fileComboBox, 4)
+        fileLayout.addWidget(self.browseButton, 1)
+        self.fileGroupBox = QtGui.QGroupBox("Browse file:")
+        self.fileGroupBox.setLayout(fileLayout)
+        return self.fileGroupBox
 
+    def _regexgroupbox(self):
         regexLayout = QtGui.QVBoxLayout()
         regexLayout.addWidget(self.regexLine)
-        regexGroupBox = QtGui.QGroupBox("Pattern for replacement:")
-        regexGroupBox.setLayout(regexLayout)
+        self.regexGroupBox = QtGui.QGroupBox("Pattern for replacement:")
+        self.regexGroupBox.setLayout(regexLayout)
+        return self.regexGroupBox
 
+    def _buttonsgroupbox(self):
         buttonsLayout = QtGui.QGridLayout()
         buttonsLayout.addWidget(self.djangonizeButton, 0, 2, 1, 3)
         buttonsLayout.addWidget(self.djangonizeLine, 1, 2, 1, 3)
         buttonsLayout.addWidget(self.openButton, 2, 0)
         buttonsLayout.addWidget(self.quitButton, 2, 5)
-        buttonsGroupBox = QtGui.QGroupBox("Djangonization and Control buttons:")
-        buttonsGroupBox.setLayout(buttonsLayout)
-
-        mainLayout = QtGui.QVBoxLayout()
-        mainLayout.addWidget(fileGroupBox)
-        mainLayout.addWidget(regexGroupBox)
-        mainLayout.addWidget(buttonsGroupBox)
-        self.setLayout(mainLayout)
+        self.buttonsGroupBox = QtGui.QGroupBox("Djangonization and Control buttons:")
+        self.buttonsGroupBox.setLayout(buttonsLayout)
+        return  self.buttonsGroupBox
 
     def browse(self):
         # Browse file and choose a default RegEx according to file extension
@@ -511,6 +557,77 @@ class DjangoFiles(DjangoImages):
             QtGui.QMessageBox.information(self,'OpenError', 'Djangonize file before opening')
 
 
+class DjangoTemplates(DjangoFiles):
+    exceptions = 'base.html, home.html, index.html'
+
+    def __init__(self):
+        super().__init__()
+
+    def _view(self):
+        # Contains information about positioning of elements at window
+        self._elements()
+
+        self._filegroupbox()
+        self.fileGroupBox.setTitle("Browse folder:")
+
+        self._regexgroupbox()
+        self.regexGroupBox.setTitle("Except templates:")
+
+        self._buttonsgroupbox()
+
+        mainLayout = QtGui.QVBoxLayout()
+        mainLayout.addWidget(self.fileGroupBox)
+        mainLayout.addWidget(self.regexGroupBox)
+        mainLayout.addWidget(self.buttonsGroupBox)
+        self.setLayout(mainLayout)
+
+    def _elements(self):
+        self.fileComboBox = self.create_combo_box(QtCore.QDir.currentPath()) # Inherit CB, Overridden for folders
+        self.browseButton = self.create_button("Browse...", self.browse)
+
+        self.regexLine = self.create_line_edit()   # Inherit line, Overridden for work with except templates
+        self.regexLine.setText(self.exceptions)
+
+        self.djangonizeButton = self.create_button("DjangonizeIt!", self.find_templates)
+        self.djangonizeText = self.create_text_edit()
+        self.emptyLabel = QtGui.QLabel()
+        self.quitButton = self.create_button("Quit", self.quit_app())
+
+    def _buttonsgroupbox(self):
+        buttonsLayout = QtGui.QGridLayout()
+        buttonsLayout.addWidget(self.djangonizeButton, 0, 2, 1, 3)
+        buttonsLayout.addWidget(self.djangonizeText, 1, 2, 1, 3)
+        buttonsLayout.addWidget(self.emptyLabel, 2, 0)
+        buttonsLayout.addWidget(self.quitButton, 2, 5)
+        self.buttonsGroupBox = QtGui.QGroupBox("Djangonization and Control buttons:")
+        self.buttonsGroupBox.setLayout(buttonsLayout)
+        return self.buttonsGroupBox
+
+    def browse(self):
+        openedDir = QtGui.QFileDialog.getExistingDirectory(self, "Find dir with templates",
+                self.fileComboBox.currentText())
+
+        if openedDir:
+            if self.fileComboBox.findText(openedDir) == -1:
+                self.fileComboBox.addItem(openedDir)
+
+            self.fileComboBox.setCurrentIndex(self.fileComboBox.findText(openedDir))
+
+    def find_templates(self):
+        directory = self.fileComboBox.currentText()
+        exceptList = self.regexLine.displayText()
+        directoryList = os.listdir(directory)
+
+        templates = list(filter(lambda x: x.endswith('.html') if x not in exceptList else None, directoryList))
+        self.djangonizeText.setText('I found {} template(s) for djangonization!'.format(len(templates)))
+        tempDict = {}
+        for template in templates:
+            pass
+
+    def open_file(self):
+        pass
+
+
 class Main(QtGui.QDialog):
     """ Start window of the application
     Call the components of the application when buttons is clicking.
@@ -533,9 +650,10 @@ class Main(QtGui.QDialog):
         # Contains information about positioning of elements at window
         tabWidget = QtGui.QTabWidget()
         tabWidget.addTab(Welcome(), "Welcome")
-        tabWidget.addTab(DjangoFiles(), "Files")
         tabWidget.addTab(DjangoImages(), "Images")
         tabWidget.addTab(History(), "Images History")
+        tabWidget.addTab(DjangoFiles(), "Files")
+        tabWidget.addTab(DjangoTemplates(), "Templates")
 
         mainLayout = QtGui.QVBoxLayout()
         mainLayout.addWidget(tabWidget)
