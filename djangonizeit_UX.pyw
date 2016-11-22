@@ -558,7 +558,7 @@ class DjangoFiles(DjangoImages):
 
 
 class DjangoTemplates(DjangoFiles):
-    exceptions = 'base.html, home.html, index.html'
+    exceptions = 'base.html, home.html, index.html'     #The program don't create views and urls for this templates
 
     def __init__(self):
         super().__init__()
@@ -588,7 +588,7 @@ class DjangoTemplates(DjangoFiles):
         self.regexLine = self.create_line_edit()   # Inherit line, Overridden for work with except templates
         self.regexLine.setText(self.exceptions)
 
-        self.djangonizeButton = self.create_button("DjangonizeIt!", self.find_templates)
+        self.djangonizeButton = self.create_button("DjangonizeIt!", self.djangonize)
         self.djangonizeText = self.create_text_edit()
         self.emptyLabel = QtGui.QLabel()
         self.quitButton = self.create_button("Quit", self.quit_app())
@@ -628,43 +628,61 @@ class DjangoTemplates(DjangoFiles):
     def find_views(self):
         dirPath = self.fileComboBox.currentText()
         limit = 0
-        while 'views.py' not in os.listdir(dirPath) or limit < 3:
+        while ('views.py' not in os.listdir(dirPath)) and limit < 3:
             dirPath = os.path.split(dirPath)[0]           # level up!
+
             limit+=1
         else:
-            assert(limit < 3)
-            with open('views.py') as viewsfile:
+            assert(limit != 3)
+            with open(os.path.join(dirPath,'views.py')) as viewsfile:
                 viewsText = viewsfile.read()
                 views = re.findall(r'[\'\"](\S+\/\S+\.html)[\'\"]', viewsText)
-                return views, dirPath
+            return views, dirPath
 
-    def find_create_urls(self):
+    def create_find_urls(self):
         dirPath = self.find_views()[1]
         if 'urls.py' not in os.listdir(dirPath):
-            with open(os.path.join(dirPath, 'views.py'), 'w') as urlsfile:
+            with open(os.path.join(dirPath, 'urls.py'), 'w') as urlsfile:
                 urlsfile.write("from django.conf.urls import url\n\n"
                                "from . import views\n\n"
                                "urlpatterns = [\n"
                                "]")
             self.djangonizeText.setText('\n'.join([self.djangonizeText.toPlainText(),
                                                    'I created the urls.py in {}'.format(dirPath)]))
+            urls = []
+            return urls
+        else:
+            with open(os.path.join(dirPath, 'urls.py')) as urlsfile:
+                urlsText = urlsfile.read()
+                urls = re.findall(r'views\.(\S+),', urlsText)
+                return urls
+
     def djangonize(self):
         tempDict = self.find_templates()
-        views, dirPath = self.find_views()
-
-        newViews = []
+        views, dirPath = self.find_views()        # views = [ 'folder/name.html', ...]
         for key in tempDict:
-            if key not in views:
-                newViews.append(key[:-5])
+            if tempDict[key] not in views:
                 with open (os.path.join(dirPath, 'views.py'), 'a') as viewsfile:
-                    viewsfile.write("def {} (request):\n"
-                                    "return render(request, '{}')\n\n".format(key[:-5], tempDict[key]))
+                    viewsfile.write("\ndef {} (request):\n"
+                                    "    return render(request, '{}')\n".format(key[:-5], tempDict[key]))
                 self.djangonizeText.setText('\n'.join([self.djangonizeText.toPlainText(),
                                                        'I added the {} view to views.py'.format(key)]))
 
-        self.find_create_urls()
+        urls = self.create_find_urls()
 
-        pass
+        for key in tempDict:
+            if key[:-5] not in urls:
+                with open(os.path.join(dirPath, 'urls.py')) as urlsfile:
+                    urlsText = urlsfile.read()
+                    urlsBuffer = urlsText[:]
+                with open(os.path.join(dirPath, 'urls.py'), 'w') as urlsfile:
+                    urlsfile.write(re.sub(r']$', "    url(r'^{0}/', views.{0}, name='{0}'),\n]".format(key[:-5]),
+                                          urlsBuffer))
+                self.djangonizeText.setText('\n'.join([self.djangonizeText.toPlainText(),
+                                                       'I added the {} url to urls.py'.format(key[:-5])]))
+
+        self.djangonizeText.setText('\n'.join([self.djangonizeText.toPlainText(),
+                                    "\nThe app is ready for connection to project's urls.py with include() function!"]))
 
 
 class Main(QtGui.QDialog):
