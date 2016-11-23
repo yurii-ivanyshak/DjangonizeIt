@@ -112,7 +112,7 @@ class DjangoImages(QtGui.QWidget):
     lStyle = "color: rgb(0, 85, 200);"  # Default stylesheet for labels
     database = "db.txt"                 # Default name of database (for logs)
     defaultCSS = r'\.\..*/images/'      # Default pattern for re.sub function for CSS (DjangoFiles().djangonize())
-    defaultHTML = r'src=\".*images/(.*\.[a-z]{3})\"'  # Default pattern for re.sub function for HTML
+    defaultHTML = r'src=\".*images/(.*\.[a-z]{3}).*?\"'  # Default pattern for re.sub function for HTML
 
     def __init__(self):
         super().__init__()
