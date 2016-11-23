@@ -1,34 +1,40 @@
 """
     Info EN
                             'Djangonize It!' - A single-file application (Also, it is a single-window now!)
-        The purpose of this application is to simplify work with images for Django developers.
-        For successful using, you should to install the app into "images" folder inside the "static" folder of your
+        The purpose of this application is to simplify work with images and templates for Django developers.
+        For successful using, you should install the app into "images" folder inside the "static" folder of your
     django project (../static/../images/). This solution simultaneously supporting the recommended file
-    structure of django projects and allows to avoid additional user and program activities related with path setting
+    structure of django projects and allows to avoid additional user and program activities related to path setting
     for image download. The installed PyQt4 is, also, needed.
         The application allows to perform the next operations:
         1. Search and replacement image links on django-links at frontend (HTML, CSS) files. Search is RegEx driven.
            The application have default regular expressions for CSS and HTML files, which can be changed by user (this
-           is necessary for cases when name of folder with images isn't "images").
-           When you run the djangonization process for the file, it isn't replaced. The app creates a copy of file
-           at folder with original. Copy's name is forming as a "[0-9]old name", which allow to simplify it searching at
+           is necessary for cases when the name of folder with images isn't "images").
+           When you run the djangonization process for the file, it isn't replaced. The app creates a copy of the file
+           at folder with original. Copy's name is forming as a "[0-9]old name", which allow simplifying it searching at
            folder (it was at the top or bottom). Also, created file can be opened from the program by os explorer.
-        2. Download images from Internet by link (in images folder) and return valid link for user's django project.
-           All results of operation are archiving (in "db.txt" at folder with program). Also, the class to simplify
-           work with logs is realized. It supports sorting by name/django link/date. Also, searching can be performed
-           by normal and RegEx strings.
+        2. Download images from the Internet by link (in images folder) and return valid link for user's django project.
+           All results of the operation are logging (in "db.txt" in a folder with the program). Also, the class for
+           simplification of work with logs is realised. It supports sorting by name/django link/date. Also,
+           searching can be performed by normal and RegEx strings.
+        3. Add records for templates to views.py and connect their views to urls.py (inside the django app folder). If
+           urls.py isn't exist inside the django app folder, the program will create it. After the operation performing,
+           the django app is ready to be connected to urls.py of django-project thorough include() function. The app
+           creates views and urls only for django templates (html files) except exception list(base.html and index.html)
+           (editable).
         The application is created in object-oriented style.
-    ----------------------------------------------------------
-        This is an UX (user experience) version of DjangonizeIt application.
-        The inheritance structure is simplified here. All child classes aren't inherit parent constructor
-    (they are more independent). Maximal depth of inheritance is, also, reduced:
+    -----------------------------------------------------------------
+    This is an UX (user experience) version of DjangonizeIt application.
+    The inheritance structure is less complicated here.
 
      PyQT Parent |          QtGui.QWidget                  QtGui.QSortFilterProxyModel          QtGui.QDialog
      Parent      |    Welcome          DjangoImages             SortFilterHistory                   Main
      1st Child   |                DjangoFiles     History
+     2nd Child   |              DjangoTemplates
 
         Class attributes from magic method __call__ is transferred to internal method _view. Most of class attributes
-     from constructor are, also transferred to internal methods and just calling from their constructors.
+     from constructor are, also transferred to internal methods and just calling from their constructors. All buttons,
+     from constructors, are moved to internal methods too.
         The user interface became more friendly.
 
 """
@@ -43,11 +49,11 @@ from PyQt4 import QtGui, QtCore
 
 class Welcome(QtGui.QWidget):
     """Class-greeting.
-    The purpose of this class is to give a feeling that this app is user friendly!
+    The purpose of this class is to give a feeling that this app is user-friendly!
 
     """
     welcomeText = [
-                   ["Hello, I'm UX version of DjangonizeIt! and I'm user friendly!", "Move me into the 'images' folder "
+                   ["Hello, I'm UX version of DjangonizeIt! and I'm user-friendly!", "Move me into the 'images' folder "
                     "inside the 'static' folder\nof your django project (../static/../images/) and \n"
                     "I will perform a lot of routine work instead of you!"],
                    ["I'm able to:", "1. Download your images from web and return you django links for them.\n"
@@ -55,13 +61,14 @@ class Welcome(QtGui.QWidget):
                                     "2. Remember information about every image which I downloaded for you!\n"
                                     "\tChoose tab 'Images History' if you need this info\n"
                                     "3. Replace non django links in your HTML and CSS files on django links.\n"
-                                    "\tChoose tab 'Files' if you need this\n"],
+                                    "\tChoose tab 'Files' if you need this\n"
+                                    "4. Update views and urls records for your django template files\n"
+                                    "\tChoose tab 'Templates' if you need this\n"],
                    ["My hobby:", "Hide and seek"]
                   ]
     def __init__(self):
         super().__init__()
         self._view()
-        self.show()
 
     def _view(self):
         # Contains information about positioning of elements at window
@@ -74,6 +81,7 @@ class Welcome(QtGui.QWidget):
         self.setLayout(mainLayout)
 
     def _groupboxes(self):
+        # All GroupBoxes in one row
         self.helloGroupBox, self.abilityGroupBox, self.hobbyGroupBox = map(self._welcome_box, self.welcomeText)
 
     def _welcome_box(self, text, fontsize=9, style="color: rgb(10, 15, 150)"):
@@ -93,8 +101,8 @@ class Welcome(QtGui.QWidget):
 
 
 class DjangoImages(QtGui.QWidget):
-    ''' Parent of functional classes of application (contains elements constructors and default variables).
-    Download images from Web, return django-links, log the result.
+    ''' Parent of functional classes of application (contains all elements constructors and default variables).
+    Download images from the Web, return django-links, log the result.
 
     '''
     NOW = datetime.now()                # Constant for logs
@@ -108,7 +116,7 @@ class DjangoImages(QtGui.QWidget):
 
     def __init__(self):
         super().__init__()
-        self._view()
+        self._view()          # is calling in all subclasses through constructor inheritance.
 
     def _view(self):
         # Contains information about positioning of elements at window
@@ -138,6 +146,7 @@ class DjangoImages(QtGui.QWidget):
                                                       "Like: image")
         self.djangoLine = self.create_line_edit(tooltip="A django link will arise here after djangonization")
 
+    # GroupBoxes
     def _linkgroupbox(self):
         linkLayout = QtGui.QGridLayout()
         linkLayout.addWidget(self.linkText, 0, 0)
@@ -206,7 +215,7 @@ class DjangoImages(QtGui.QWidget):
         return comboBox
 
     def dir_list(self):
-        # Method which returns list of folders before static folder (in django structure). Optimized for Linux
+        # Method which returns list of folders before static folder (in django structure). Optimized for different os
         if os.name == 'nt':
             pathList = re.findall(r'static\\(.+).*$', os.getcwd()) # path is saved as a list with one element
             try:
@@ -229,7 +238,7 @@ class DjangoImages(QtGui.QWidget):
             return dirList
 
     def djangonize(self):
-        # Download image and return its django-link (Overridable)
+        # Download image and return its django-link (Is overridden in DjangoFiles and DjangoTemplates)
         url = str(self.linkText.toPlainText())
         if re.search(r'\.[a-z]{3}$', url):           # Validate link by type of file
             filename = str(self.nameLine.displayText())
@@ -263,7 +272,7 @@ class DjangoImages(QtGui.QWidget):
 
 
 class History(DjangoImages):
-    ''' Class for comfortable work with logs. Ih inherits methods only because design of this class is so different.
+    ''' Class for comfortable work with logs.
     Sort and filter djangonized images (RegEx supports). All info in table can be copied.
 
     '''
@@ -287,20 +296,32 @@ class History(DjangoImages):
         self.setLayout(mainLayout)
 
     def _elements(self):
-        self.proxyModel = SortFilterHistory(self)       # Technical class (PyQt template)
-        self.proxyModel.setDynamicSortFilter(True)
-
-        self._proxy()
-        self._search_box()
-        self._date_boxes()
-
         # Buttons
         self.openButton = self.create_button('Folder', self.open_folder, tooltip="Open folder with djangonized images")
         self.quitButton = self.create_button('Quit', self.quit_app(), tooltip="Close All Windows")
         self.emptyLabel = QtGui.QLabel()  # Filler for proxyLayout
 
+        self._proxy()
+        self._search_box()
+        self._date_boxes()
+
+    def _proxy(self):
+        self.proxyModel = SortFilterHistory(self)       # Technical class (PyQt template)
+        self.proxyModel.setDynamicSortFilter(True)
+
+        self.proxyView = QtGui.QTreeView()  # Table view
+        self.proxyView.setRootIsDecorated(False)
+        self.proxyView.setAlternatingRowColors(True)
+        self.proxyView.setModel(self.proxyModel)  # Setting of table for the view
+        self.proxyView.setSortingEnabled(True)
+        self.proxyView.sortByColumn(1, QtCore.Qt.AscendingOrder)
+        self.proxyModel.setSourceModel(self.create_log_table())  # Setting of table for the window
+
+        self.proxyView.setColumnWidth(0, 75)              # Width of the "Name" column
+        self.proxyView.setColumnWidth(1, 240)             # Width of the "Djangonized link" column
+
+    # GroupBoxes
     def _search_box(self):
-        # Search
         self.filterPatternLineEdit =self.create_line_edit()          # Search line
         self.filterPatternLabel = QtGui.QLabel("Filter pattern:")
         self.filterPatternLabel.setBuddy(self.filterPatternLineEdit)
@@ -329,18 +350,6 @@ class History(DjangoImages):
         self.fromDateEdit.dateChanged.connect(self.date_filter_changed)
         self.toDateEdit.dateChanged.connect(self.date_filter_changed)
 
-    def _proxy(self):
-        self.proxyView = QtGui.QTreeView()  # Table view
-        self.proxyView.setRootIsDecorated(False)
-        self.proxyView.setAlternatingRowColors(True)
-        self.proxyView.setModel(self.proxyModel)  # Setting of table for the view
-        self.proxyView.setSortingEnabled(True)
-        self.proxyView.sortByColumn(1, QtCore.Qt.AscendingOrder)
-        self.proxyModel.setSourceModel(self.create_log_table())  # Setting of table for the window
-
-        self.proxyView.setColumnWidth(0, 75)
-        self.proxyView.setColumnWidth(1, 240)
-
     def _proxygroupbox(self):
         proxyLayout = QtGui.QGridLayout()
         proxyLayout.addWidget(self.proxyView, 0, 0, 1, 3)
@@ -355,7 +364,6 @@ class History(DjangoImages):
         self.proxyGroupBox = QtGui.QGroupBox("Sort/Filter Links")
         self.proxyGroupBox.setLayout(proxyLayout)
         return  self.proxyGroupBox
-
 
     def _buttonsgroupbox(self):
         buttonsLayout = QtGui.QHBoxLayout()
@@ -406,7 +414,7 @@ class History(DjangoImages):
                                      QtCore.QDateTime(QtCore.QDate(int(line[2]), int(line[3]), int(line[4])),  # Date
                                                                    QtCore.QTime(int(line[5]), int(line[6]))))  # Time'
         except FileNotFoundError:
-            pass                        # This is good. We just need to avoid the Error
+            pass                        # This is right. We just need to avoid the Error
         return table
 
     def open_folder(self):
@@ -416,7 +424,8 @@ class History(DjangoImages):
 
 class DjangoFiles(DjangoImages):
     ''' Class simplify work with website templates for django programmers.
-    Djangonize links in CSS and HTML files, save copy of djangonized files in format [0-9]oldname, return name to user.
+    Djangonize links in CSS and HTML files, save a copy of djangonized files in the format [0-9]oldname,
+    return the name to a user.
 
     '''
     def __init__(self):
@@ -451,8 +460,8 @@ class DjangoFiles(DjangoImages):
         self.regexLine.setText("Choose a CSS or HTML file!")
         self.fileComboBox = self.create_combo_box(QtCore.QDir.currentPath())
 
+    # GroupBoxes
     def _filegroupbox(self):
-
         fileLayout = QtGui.QHBoxLayout()
         fileLayout.addWidget(self.fileComboBox, 4)
         fileLayout.addWidget(self.browseButton, 1)
@@ -479,7 +488,7 @@ class DjangoFiles(DjangoImages):
 
     def browse(self):
         # Browse file and choose a default RegEx according to file extension
-        openedFile = QtGui.QFileDialog.getOpenFileName(self, "Find a CSS or HTML", QtCore.QDir.currentPath())
+        openedFile = QtGui.QFileDialog.getOpenFileName(self, "Find a CSS or HTML", self.fileComboBox.currentText())
 
         if openedFile:                            #add paths to the fileComboBox
             if self.fileComboBox.findText(openedFile) == -1:
@@ -497,7 +506,7 @@ class DjangoFiles(DjangoImages):
             self.regexLine.setText("Wrong file. Choose a CSS or HTML!")
 
     def djangonize(self):
-        # Method which make files more djangonized! (Overridden method for djangonizeButton)
+        # Method which make files more djangonized!
         filePath = self.fileComboBox.currentText() # Path to file from fileComboBox
         dirList = self.dir_list()         # DjangonizeImage inherited method which returns folders before static folder
         newFilename = str(randint(0, 9)) + os.path.basename(filePath) # Filename where changes will be saved
@@ -506,36 +515,22 @@ class DjangoFiles(DjangoImages):
             djPath = '../' + '/'.join(dirList) + '/'  # Path to images in django project
             nonDjPath = str(self.regexLine.displayText())  # Path to images in CSS for replacement
 
-            if os.name == 'nt':
-                with open(os.path.dirname(filePath) + '/' + newFilename, 'w') as f:    # open new
-                    content = open(filePath).read()                                    # copy data from old
-                    f.write('{% load staticfiles %}\n')                                # connect static files to CSS
-                    f.write(re.sub(nonDjPath, djPath, content))                        # replace line and write in new
-                    self.djangonizeLine.setText("New filename: " + newFilename)        # return name of new
-
-            else:
-                with open(os.path.dirname(filePath) + '\\' + newFilename, 'w') as f:
-                    content = open(filePath).read()
-                    f.write('{% load staticfiles %}\n')
-                    f.write(re.sub(nonDjPath, djPath, content))
-                    self.djangonizeLine.setText("New filename: " + newFilename)
+            with open(os.path.join(os.path.dirname(filePath), newFilename), 'w') as f:    # open new
+                content = open(filePath).read()                                    # copy data from old
+                f.write('{% load staticfiles %}\n')                                # connect static files to CSS
+                f.write(re.sub(nonDjPath, djPath, content))                        # replace line and write in new
+                self.djangonizeLine.setText("New filename: {}".format(newFilename))        # return name of new
 
         elif filePath[-3:] == "tml":
 
             djPath = "src=\"{% static '" + '/'.join(dirList) + '/' + "\g<1>" + "' %}\"" # Path to django-project images
             nonDjPath = str(self.regexLine.displayText())  # Path in CSS or HTML for replace
 
-            if os.name == 'nt':
-                with open(os.path.dirname(filePath) + '/' + newFilename, 'w') as f:   # Create a new file: [0-9]old name
-                    content = open(filePath).read()                              # Open old file and read it content
-                    f.write(re.sub(nonDjPath, djPath, content))                  # Replacement is here
-                    self.djangonizeLine.setText("New filename: " + newFilename)     # Info for user
+            with open(os.path.join(os.path.dirname(filePath), newFilename), 'w') as f:   # Create a new file: [0-9]old name
+                content = open(filePath).read()                              # Open old file and read it content
+                f.write(re.sub(nonDjPath, djPath, content))                  # Replacement is here
+                self.djangonizeLine.setText("New filename: {}".format(newFilename))     # Info for user
 
-            else:
-                with open(os.path.dirname(filePath) + '\\' + newFilename, 'w') as f:
-                    content = open(filePath).read()
-                    f.write(re.sub(nonDjPath, djPath, content))
-                    self.djangonizeLine.setText("New filename: " + newFilename)
         else:
             self.djangonizeLine.setText("Wrong file. Choose CSS or HTML!")   # When not CSS or not HTML file is browsed
 
@@ -558,6 +553,11 @@ class DjangoFiles(DjangoImages):
 
 
 class DjangoTemplates(DjangoFiles):
+    ''' Class which connects user templates to views and urls in applications at django project.
+    Compare templates in 'templates' folder with records in 'views.py' and 'urls.py' (create it if it doesn't exist)
+    and add records for templates which aren't connected to these files.
+
+    '''
     exceptions = 'base.html, home.html, index.html'     #The program don't create views and urls for this templates
 
     def __init__(self):
@@ -567,10 +567,10 @@ class DjangoTemplates(DjangoFiles):
         # Contains information about positioning of elements at window
         self._elements()
 
-        self._filegroupbox()
-        self.fileGroupBox.setTitle("Browse folder:")
+        self._filegroupbox()                                    # Inherited
+        self.fileGroupBox.setTitle("Browse templates folder:")
 
-        self._regexgroupbox()
+        self._regexgroupbox()                                   # Inherited
         self.regexGroupBox.setTitle("Except templates:")
 
         self._buttonsgroupbox()
@@ -582,13 +582,18 @@ class DjangoTemplates(DjangoFiles):
         self.setLayout(mainLayout)
 
     def _elements(self):
-        self.fileComboBox = self.create_combo_box(QtCore.QDir.currentPath()) # Inherit CB, Overridden for folders
+        # _filegroupbox (Is inherited from DjangoFiles)
+        self.fileComboBox = self.create_combo_box(os.path.split(os.path.split(QtCore.QDir.currentPath())[0])[0])
         self.browseButton = self.create_button("Browse...", self.browse)
 
-        self.regexLine = self.create_line_edit()   # Inherit line, Overridden for work with except templates
+        # _regexgroupbox (Is inherited from DjangoFiles)
+        self.regexLine = self.create_line_edit(tooltip="Views and urls records doesn't be created for these files")
         self.regexLine.setText(self.exceptions)
 
-        self.djangonizeButton = self.create_button("DjangonizeIt!", self.djangonize)
+        # _buttonsgroupbox
+        self.djangonizeButton = self.create_button("DjangonizeIt!", self.djangonize, tooltip="Find templates in "
+                                                   "choosen folder, analyse records in views and urls "
+                                                    "if records for templates aren't found, create them")
         self.djangonizeText = self.create_text_edit()
         self.emptyLabel = QtGui.QLabel()
         self.quitButton = self.create_button("Quit", self.quit_app())
@@ -604,6 +609,7 @@ class DjangoTemplates(DjangoFiles):
         return self.buttonsGroupBox
 
     def browse(self):
+        # Browse folder (Overrides method in DjangoFiles)
         openedDir = QtGui.QFileDialog.getExistingDirectory(self, "Find dir with templates",
                 self.fileComboBox.currentText())
 
@@ -614,7 +620,7 @@ class DjangoTemplates(DjangoFiles):
             self.fileComboBox.setCurrentIndex(self.fileComboBox.findText(openedDir))
 
     def find_templates(self):
-        # Finding templates in choosed dir and return dict(name: [name, dir/name])
+        # Finds templates in choosen dir and return dict(name: dir/name)
         dirPath = self.fileComboBox.currentText()
         directory = os.path.split(dirPath)[1]
         exceptList = self.regexLine.displayText()
@@ -626,20 +632,24 @@ class DjangoTemplates(DjangoFiles):
         return tempDict
 
     def find_views(self):
+        # Finds file "views.py" of django application and return records with links on application templates
         dirPath = self.fileComboBox.currentText()
         limit = 0
         while ('views.py' not in os.listdir(dirPath)) and limit < 3:
             dirPath = os.path.split(dirPath)[0]           # level up!
-
             limit+=1
         else:
-            assert(limit != 3)
+            assert(limit != 3)           # stop the program if while loop is stopped because the limit < 3 became False
             with open(os.path.join(dirPath,'views.py')) as viewsfile:
                 viewsText = viewsfile.read()
                 views = re.findall(r'[\'\"](\S+\/\S+\.html)[\'\"]', viewsText)
-            return views, dirPath
+            return views, dirPath     # the urls.py will be searching in the same directory. Usually, we can have
+                                      # situation in which urls.py don't exists at application folder and we should
+                                      # create it. The dirPath of views.py will allow defining where the
+                                      # urls.py should be created correctly.
 
     def create_find_urls(self):
+        # Searching urls.py. If it isn't found, create it. Parse records with connected views, return them as list.
         dirPath = self.find_views()[1]
         if 'urls.py' not in os.listdir(dirPath):
             with open(os.path.join(dirPath, 'urls.py'), 'w') as urlsfile:
@@ -658,6 +668,7 @@ class DjangoTemplates(DjangoFiles):
                 return urls
 
     def djangonize(self):
+        # Add records for templates which aren't connected to views.py and urls.py (except exceptions)
         tempDict = self.find_templates()
         views, dirPath = self.find_views()        # views = [ 'folder/name.html', ...]
         for key in tempDict:
@@ -668,13 +679,13 @@ class DjangoTemplates(DjangoFiles):
                 self.djangonizeText.setText('\n'.join([self.djangonizeText.toPlainText(),
                                                        'I added the {} view to views.py'.format(key)]))
 
-        urls = self.create_find_urls()
+        urls = self.create_find_urls()            # urls = ['name', ...]
 
         for key in tempDict:
             if key[:-5] not in urls:
                 with open(os.path.join(dirPath, 'urls.py')) as urlsfile:
                     urlsText = urlsfile.read()
-                    urlsBuffer = urlsText[:]
+                    urlsBuffer = urlsText[:]        # Allows to make changes in file without creation of second files
                 with open(os.path.join(dirPath, 'urls.py'), 'w') as urlsfile:
                     urlsfile.write(re.sub(r']$', "    url(r'^{0}/', views.{0}, name='{0}'),\n]".format(key[:-5]),
                                           urlsBuffer))
@@ -687,40 +698,45 @@ class DjangoTemplates(DjangoFiles):
 
 class Main(QtGui.QDialog):
     """ Start window of the application
-    Call the components of the application when buttons is clicking.
+    Call the components of the application when buttons are clicking.
 
     """
     size = 450, 340                     # Default size of application windows (width, height)
     position = 450, 150                 # Default position of application windows (horizontal,vertical)
 
     def __init__(self):
-        super(Main, self).__init__()
-        # Buttons (djangonizeButton, openButton, browseButton and quitButton are inherited)
-        self._tray_icon_actions()
-        self._create_tray_icon()
-        self.trayIcon.activated.connect(self.double_click)
-
-        self.trayIcon.show()
+        super().__init__()
         self._view()
+        self.trayIcon.show()
 
     def _view(self):
         # Contains information about positioning of elements at window
-        tabWidget = QtGui.QTabWidget()
-        tabWidget.addTab(Welcome(), "Welcome")
-        tabWidget.addTab(DjangoImages(), "Images")
-        tabWidget.addTab(History(), "Images History")
-        tabWidget.addTab(DjangoFiles(), "Files")
-        tabWidget.addTab(DjangoTemplates(), "Templates")
+        self._main_tabs()
 
         mainLayout = QtGui.QVBoxLayout()
-        mainLayout.addWidget(tabWidget)
+        mainLayout.addWidget(self.tabWidget)
         self.setLayout(mainLayout)
+
+        # Tray icon block
+        self._tray_icon_actions()
+        self._tray_icon()
+        self.trayIcon.activated.connect(self.double_click)
 
         self.setWindowTitle('DjangonizeIt! - A single-file application')
         self.resize(*self.size)
         self.move(*self.position)
 
-    def _create_tray_icon(self):
+    def _main_tabs(self):
+        # List of Main tabs
+        self.tabWidget = QtGui.QTabWidget()
+        self.tabWidget.addTab(Welcome(), "Welcome")
+        self.tabWidget.addTab(DjangoImages(), "Images")
+        self.tabWidget.addTab(History(), "Images History")
+        self.tabWidget.addTab(DjangoFiles(), "Files")
+        self.tabWidget.addTab(DjangoTemplates(), "Templates")
+        return self.tabWidget
+
+    def _tray_icon(self):
         # Create tray icon and link context menu actions to it
         self.trayIconMenu = QtGui.QMenu(self)
         self.trayIconMenu.addAction(self.minimizeAction)
@@ -752,7 +768,7 @@ class Main(QtGui.QDialog):
 
 class SortFilterHistory(QtGui.QSortFilterProxyModel):
     ''' Technical class for the History class. (pyQt template)
-    Example of the class is used for representing (filtering) of table content by date range.
+    An example of the class is used for representing (filtering) of table content by date range.
 
     '''
     def __init__(self, parent=None):
