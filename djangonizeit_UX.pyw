@@ -7,16 +7,17 @@
     structure of django projects and allows to avoid additional user and program activities related to path setting
     for image download. The installed PyQt4 is, also, needed.
         The application allows to perform the next operations:
-        1. Search and replacement image links on django-links at frontend (HTML, CSS) files. Search is RegEx driven.
+        1. Download images from the Internet by link and return valid link for user's django project.
+           All results of the operation are logging (in "db.txt" in a folder with the program). Also, the class for
+           simplification of work with logs is realised. It supports sorting by name/django link/date. Also,
+           searching can be performed by normal and RegEx strings. The image is downloading to images folder as default,
+           but user can choose any its subfolder as allocation for image.
+        2. Search and replacement image links on django-links at frontend (HTML, CSS) files. Search is RegEx driven.
            The application have default regular expressions for CSS and HTML files, which can be changed by user (this
            is necessary for cases when the name of folder with images isn't "images").
            When you run the djangonization process for the file, it isn't replaced. The app creates a copy of the file
            at folder with original. Copy's name is forming as a "[0-9]old name", which allow simplifying it searching at
            folder (it was at the top or bottom). Also, created file can be opened from the program by os explorer.
-        2. Download images from the Internet by link (in images folder) and return valid link for user's django project.
-           All results of the operation are logging (in "db.txt" in a folder with the program). Also, the class for
-           simplification of work with logs is realised. It supports sorting by name/django link/date. Also,
-           searching can be performed by normal and RegEx strings.
         3. Add records for templates to views.py and connect their views to urls.py (inside the django app folder). If
            urls.py isn't exist inside the django app folder, the program will create it. After the operation performing,
            the django app is ready to be connected to urls.py of django-project thorough include() function. The app
@@ -143,8 +144,14 @@ class DjangoImages(QtGui.QWidget):
         self.linkText = self.create_text_edit(tooltip="Enter the image URL here. "
                                                       "Like: https://www.example.com/image.png")
         self.nameLine = self.create_line_edit(tooltip="Enter the new filename here. "
-                                                      "Like: image")
+                                                      "Like: image for 'image.png'")
         self.djangoLine = self.create_line_edit(tooltip="A django link will arise here after djangonization")
+
+        # Combobox
+        self.folderBox = self.create_combo_box('Default')
+        self.folderBox.setEditable(False)
+        self.folderBox.setToolTip('Folders where the image may be allocated')
+        self.add_folders()
 
     # GroupBoxes
     def _linkgroupbox(self):
@@ -156,8 +163,9 @@ class DjangoImages(QtGui.QWidget):
         return  self.linkGroupBox
 
     def _namegroupbox(self):
-        nameLayout = QtGui.QGridLayout()
-        nameLayout.addWidget(self.nameLine, 1, 0)
+        nameLayout = QtGui.QHBoxLayout()
+        nameLayout.addWidget(self.nameLine, 9)
+        nameLayout.addWidget(self.folderBox, 2)
 
         self.nameGroupBox = QtGui.QGroupBox("Filename:")
         self.nameGroupBox.setLayout(nameLayout)
@@ -239,7 +247,8 @@ class DjangoImages(QtGui.QWidget):
 
     def djangonize(self):
         # Download image and return its django-link (Is overridden in DjangoFiles and DjangoTemplates)
-        url = str(self.linkText.toPlainText())
+        url = str(self.linkText.toPlainText())       # Entered URL (by user)
+        folder = self.folderBox.currentText()        # Folder where the image will be downloaded
         if re.search(r'\.[a-z]{3}$', url):           # Validate link by type of file
             filename = str(self.nameLine.displayText())
 
@@ -248,15 +257,20 @@ class DjangoImages(QtGui.QWidget):
             else:                         # Else, save it with entered name and original fileformat
                 newFilename = filename + os.path.basename(url)[-4:]
 
+            #Block to define allocation where the image will be downloaded
+            if folder == 'Default':           # 'Default' - the same folder where the app file is placed
+                allocation = newFilename
+            else:
+                allocation = '/'.join([folder, newFilename])
+
             dirList = self.dir_list()
 
             # If with dir_list() all is ok, download image to django directory
-            # If statement don't used here, because any Exception in dir_list() stop execution of the method
-            URLopener().retrieve(str(url), newFilename)
+            # If statement don't used here, because any Exception in dir_list() will stop an execution of the method
+            URLopener().retrieve(str(url), allocation)
 
-            # Return the link to user interface
-            djangoView = "{% static '" + '/'.join(dirList) + '/' + newFilename + " '%}"
-            self.djangoLine.setText(djangoView)
+            djangoView = "{% static '" + '/'.join(dirList) + '/' + allocation + " '%}"   # Djangonized link
+            self.djangoLine.setText(djangoView)              # Return the link to user interface
 
             # Log the result
             with open(self.database, "a") as f:
@@ -265,6 +279,12 @@ class DjangoImages(QtGui.QWidget):
                 f.write(historyNote)
         else:
             QtGui.QMessageBox.information(self, "Link is wrong or not exist", "The IMAGE link should be entered!")
+
+    def add_folders(self):
+        #Searching folders in folder with program and add them to combobox.
+        directoryList = os.listdir()
+        folders = list(filter(lambda x: x if os.path.isdir(x) else None, directoryList))
+        list(map((lambda folder: self.folderBox.addItem(folder,folder)), folders))
 
     def quit_app(self):
         # Complete quit from app
@@ -414,7 +434,7 @@ class History(DjangoImages):
                                      QtCore.QDateTime(QtCore.QDate(int(line[2]), int(line[3]), int(line[4])),  # Date
                                                                    QtCore.QTime(int(line[5]), int(line[6]))))  # Time'
         except FileNotFoundError:
-            pass                        # This is right. We just need to avoid the Error
+            pass                        # This is right. We just need to avoid the Error if you haven't file for logs.
         return table
 
     def open_folder(self):
@@ -554,11 +574,11 @@ class DjangoFiles(DjangoImages):
 
 class DjangoTemplates(DjangoFiles):
     ''' Class which connects user templates to views and urls in applications at django project.
-    Compare templates in 'templates' folder with records in 'views.py' and 'urls.py' (create it if it doesn't exist)
+    Compare templates in 'templates' folder with records in 'views.py' and 'urls.py' (create it if it isn't exist)
     and add records for templates which aren't connected to these files.
 
     '''
-    exceptions = 'base.html, home.html, index.html'     #The program don't create views and urls for this templates
+    exceptions = 'base.html, home.html, index.html'     #The program don't create views and urls for these templates
 
     def __init__(self):
         super().__init__()
@@ -587,7 +607,7 @@ class DjangoTemplates(DjangoFiles):
         self.browseButton = self.create_button("Browse...", self.browse)
 
         # _regexgroupbox (Is inherited from DjangoFiles)
-        self.regexLine = self.create_line_edit(tooltip="Views and urls records doesn't be created for these files")
+        self.regexLine = self.create_line_edit(tooltip="Views and urls records aren't be created for these files")
         self.regexLine.setText(self.exceptions)
 
         # _buttonsgroupbox
