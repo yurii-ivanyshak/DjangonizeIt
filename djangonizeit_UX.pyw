@@ -323,6 +323,7 @@ class History(DjangoImages):
         self.refreshButton.clicked.connect(self.refresh_table)
         self.importButton = QtGui.QPushButton('Import All', self)
         self.importButton.clicked.connect(self.import_button)
+        self.importButton.setToolTip('Add djangonized links of all files in image folder and its subfolders to database')
 
         self.emptyLabel = QtGui.QLabel()  # Filler for proxyLayout
 
@@ -461,7 +462,7 @@ class History(DjangoImages):
                 for line in lines:
                     line = line.split(',')
                     currentImages.append(line[0])
-        except Exception:                      #Create the db file if it isn't exist
+        except FileNotFoundError:                      #Create the db file if it isn't exist
             f = open(self.database, 'w')
             f.close()
 
