@@ -9,9 +9,9 @@
         The application allows to perform the next operations:
         1. Download images from the Internet by link and return valid link for user's django project.
            All results of the operation are logging (in "db.txt" in a folder with the program). Also, the class for
-           simplification of work with logs is realised. It supports sorting by name/django link/date. Also,
-           searching can be performed by normal and RegEx strings. The image is downloading to images folder as default,
-           but user can choose any its subfolder as allocation for image.
+           simplification of work with logs is realised (Also, you can log all existing images). It supports sorting
+           by name/django link/date. Also, searching can be performed by normal and RegEx strings. The image is
+           downloading to images folder as default, but user can choose any its subfolder as allocation for image.
         2. Search and replacement image links on django-links at frontend (HTML, CSS) files. Search is RegEx driven.
            The application have default regular expressions for CSS and HTML files, which can be changed by user (this
            is necessary for cases when the name of folder with images isn't "images").
@@ -72,7 +72,7 @@ class Welcome(QtGui.QWidget):
         self._view()
 
     def _view(self):
-        # Contains information about positioning of elements at window
+        "Contains information about positioning of elements at window"
         self._groupboxes()
 
         mainLayout = QtGui.QVBoxLayout()
@@ -82,11 +82,11 @@ class Welcome(QtGui.QWidget):
         self.setLayout(mainLayout)
 
     def _groupboxes(self):
-        # All GroupBoxes in one row
+        "All GroupBoxes in one row"
         self.helloGroupBox, self.abilityGroupBox, self.hobbyGroupBox = map(self._welcome_box, self.welcomeText)
 
     def _welcome_box(self, text, fontsize=9, style="color: rgb(10, 15, 150)"):
-        #Transform list to GroupBox
+        "Transform list to GroupBox"
         textLabel = QtGui.QLabel(text[1], self)
         font = QtGui.QFont()
         font.setPointSize(fontsize)
@@ -120,7 +120,7 @@ class DjangoImages(QtGui.QWidget):
         self._view()          # is calling in all subclasses through constructor inheritance.
 
     def _view(self):
-        # Contains information about positioning of elements at window
+        "Contains information about positioning of elements at window"
         self._elements()
 
         self._linkgroupbox()
@@ -153,7 +153,7 @@ class DjangoImages(QtGui.QWidget):
         self.folderBox.setToolTip('Folders where the image may be allocated')
         self.add_folders()
 
-    # GroupBoxes
+    "GroupBoxes"
     def _linkgroupbox(self):
         linkLayout = QtGui.QGridLayout()
         linkLayout.addWidget(self.linkText, 0, 0)
@@ -182,7 +182,7 @@ class DjangoImages(QtGui.QWidget):
         self.buttonsGroupBox.setLayout(buttonsLayout)
         return  self.buttonsGroupBox
 
-    # Element constructors
+    "Element constructors"
     def create_button(self, text, activity, tooltip=None, fontsize=int(bFontSize), style=bStyle):
         button = QtGui.QPushButton(text, self)
         button.clicked.connect(activity)
@@ -222,10 +222,10 @@ class DjangoImages(QtGui.QWidget):
         comboBox.addItem(text)
         return comboBox
 
-    def dir_list(self):
-        # Method which returns list of folders before static folder (in django structure). Optimized for different os
+    def dir_list(self, path):
+        "Method which returns list of folders before static folder (in django structure). Optimized for different os"
         if os.name == 'nt':
-            pathList = re.findall(r'static\\(.+).*$', os.getcwd()) # path is saved as a list with one element
+            pathList = re.findall(r'static\\(.+).*$', path) # path is saved as a list with one element
             try:
                 dirList = pathList[0].split('\\')
             except IndexError:  # Error when list is empty (for cases when the application isn't installed)
@@ -235,7 +235,7 @@ class DjangoImages(QtGui.QWidget):
                 raise
             return dirList
         else:
-            pathList = re.findall(r'static/(.+).*$', os.getcwd())
+            pathList = re.findall(r'static/(.+).*$', path)
             try:
                 dirList = pathList[0].split('/')
             except IndexError:
@@ -246,7 +246,7 @@ class DjangoImages(QtGui.QWidget):
             return dirList
 
     def djangonize(self):
-        # Download image and return its django-link (Is overridden in DjangoFiles and DjangoTemplates)
+        "Download image and return its django-link (Is overridden in DjangoFiles and DjangoTemplates)"
         url = str(self.linkText.toPlainText())       # Entered URL (by user)
         folder = self.folderBox.currentText()        # Folder where the image will be downloaded
         if re.search(r'\.[a-z]{3}$', url):           # Validate link by type of file
@@ -263,7 +263,7 @@ class DjangoImages(QtGui.QWidget):
             else:
                 allocation = '/'.join([folder, newFilename])
 
-            dirList = self.dir_list()
+            dirList = self.dir_list(os.getcwd())
 
             # If with dir_list() all is ok, download image to django directory
             # If statement don't used here, because any Exception in dir_list() will stop an execution of the method
@@ -281,13 +281,13 @@ class DjangoImages(QtGui.QWidget):
             QtGui.QMessageBox.information(self, "Link is wrong or not exist", "The IMAGE link should be entered!")
 
     def add_folders(self):
-        #Searching folders in folder with program and add them to combobox.
+        "Searching folders in folder with program and add them to combobox."
         directoryList = os.listdir()
         folders = list(filter(lambda x: x if os.path.isdir(x) else None, directoryList))
         list(map((lambda folder: self.folderBox.addItem(folder,folder)), folders))
 
     def quit_app(self):
-        # Complete quit from app
+        "Complete quit from app"
         return QtCore.QCoreApplication.instance().quit
 
 
@@ -300,7 +300,7 @@ class History(DjangoImages):
         super().__init__()
 
     def _view(self):
-        # Contains information about positioning of elements at window
+        "Contains information about positioning of elements at window"
         self._elements()
 
         self.text_filter_changed()
@@ -319,6 +319,11 @@ class History(DjangoImages):
         # Buttons
         self.openButton = self.create_button('Folder', self.open_folder, tooltip="Open folder with djangonized images")
         self.quitButton = self.create_button('Quit', self.quit_app(), tooltip="Close All Windows")
+        self.refreshButton = QtGui.QPushButton('Refresh', self)
+        self.refreshButton.clicked.connect(self.refresh_table)
+        self.importButton = QtGui.QPushButton('Import All', self)
+        self.importButton.clicked.connect(self.import_button)
+
         self.emptyLabel = QtGui.QLabel()  # Filler for proxyLayout
 
         self._proxy()
@@ -338,9 +343,10 @@ class History(DjangoImages):
         self.proxyModel.setSourceModel(self.create_log_table())  # Setting of table for the window
 
         self.proxyView.setColumnWidth(0, 75)              # Width of the "Name" column
-        self.proxyView.setColumnWidth(1, 240)             # Width of the "Djangonized link" column
+        self.proxyView.setColumnWidth(1, 235)             # Width of the "Djangonized link" column
+        self.proxyView.setColumnWidth(2, 75)              # Width of the "Date" column
 
-    # GroupBoxes
+    "GroupBoxes"
     def _search_box(self):
         self.filterPatternLineEdit =self.create_line_edit()          # Search line
         self.filterPatternLabel = QtGui.QLabel("Filter pattern:")
@@ -373,9 +379,11 @@ class History(DjangoImages):
     def _proxygroupbox(self):
         proxyLayout = QtGui.QGridLayout()
         proxyLayout.addWidget(self.proxyView, 0, 0, 1, 3)
-        proxyLayout.addWidget(self.filterPatternLabel, 1, 0)
-        proxyLayout.addWidget(self.filterPatternLineEdit, 1, 1)
-        proxyLayout.addWidget(self.filterSyntaxComboBox, 1, 2)
+        proxyLayout.addWidget(self.importButton, 1, 0)
+        proxyLayout.addWidget(self.refreshButton, 1, 2)
+        proxyLayout.addWidget(self.filterPatternLabel, 2, 0)
+        proxyLayout.addWidget(self.filterPatternLineEdit, 2, 1)
+        proxyLayout.addWidget(self.filterSyntaxComboBox, 2, 2)
         proxyLayout.addWidget(self.fromLabel, 3, 0)
         proxyLayout.addWidget(self.fromDateEdit, 3, 1, 1, 2)
         proxyLayout.addWidget(self.toLabel, 4, 0)
@@ -396,7 +404,7 @@ class History(DjangoImages):
         return self.buttonsGroupBox
 
     def text_filter_changed(self):
-        # Filtering by filter patterns (Normal, RegEx)
+        "Filtering by filter patterns (Normal, RegEx)"
         syntax = QtCore.QRegExp.PatternSyntax(
             self.filterSyntaxComboBox.itemData(
                 self.filterSyntaxComboBox.currentIndex()))
@@ -405,19 +413,19 @@ class History(DjangoImages):
         self.proxyModel.setFilterRegExp(regExp)
 
     def date_filter_changed(self):
-        # Filtering by dates
+        "Filtering by dates"
         self.proxyModel.set_filter_minimum_date(self.fromDateEdit.date())
         self.proxyModel.set_filter_maximum_date(self.toDateEdit.date())
 
     def add_log(self,table, name, link, date):
-        # Fill row of the table
+        "Fill row of the table"
         table.insertRow(0)
         table.setData(table.index(0, 0), name)
         table.setData(table.index(0, 1), link)
         table.setData(table.index(0, 2), date)
 
     def create_log_table(self):
-        # Create table and fill it by log data
+        "Create table and fill it by log data"
         table = QtGui.QStandardItemModel(0, 3, self)
 
         table.setHeaderData(0, QtCore.Qt.Horizontal, "Name")
@@ -438,8 +446,50 @@ class History(DjangoImages):
         return table
 
     def open_folder(self):
-        # Open folder with djangonized images
+        "Open folder with djangonized images"
         return os.system(QtGui.QFileDialog().getOpenFileName(self,'Open Dj-folder', QtCore.QDir.currentPath()))
+
+    def import_all(self, path):
+        "Method to find all files (images) in the folder and it subfolders, and add their notes to database"
+        elements = os.listdir(path)
+
+        # Block for copykilling
+        currentImages = []
+        try:
+            with open(self.database) as f:
+                lines = f.readlines()
+                for line in lines:
+                    line = line.split(',')
+                    currentImages.append(line[0])
+        except Exception:                      #Create the db file if it isn't exist
+            f = open(self.database, 'w')
+            f.close()
+
+        # Block for adding the folder and subfolders elements
+        for element in elements:
+            if os.path.isdir(element):
+                self.import_all(os.path.join(path, element))     # Recursive call for subfolder
+            else:
+                if element in currentImages:        # Copykiller
+                    continue
+                else:
+                    dirList = self.dir_list(path)
+
+                    djangoView = "{% static '" + '/'.join(dirList) + '/' + element + " '%}"  # Djangonized link
+
+                    # Import element link to the database
+                    with open(self.database, "a") as f:
+                        historyNote = ','.join([element, djangoView, str(self.NOW.year), str(self.NOW.month),
+                                                str(self.NOW.day), str(self.NOW.hour), str(self.NOW.minute)]) + '\n'
+                        f.write(historyNote)
+
+    def import_button(self):
+        "Transform the import_all method in the form callable by PyQt button."
+        return self.import_all(os.getcwd())
+
+    def refresh_table(self):
+        QtGui.QMessageBox.information(self, "Unready feature",
+                                      "The feature isn't ready, restart the program to refresh!")
 
 
 class DjangoFiles(DjangoImages):
@@ -452,7 +502,7 @@ class DjangoFiles(DjangoImages):
         super().__init__()
 
     def _view(self):
-        # Contains information about positioning of elements at window
+        "Contains information about positioning of elements at window"
         self._elements()
         self._filegroupbox()
         self._regexgroupbox()
@@ -480,7 +530,7 @@ class DjangoFiles(DjangoImages):
         self.regexLine.setText("Choose a CSS or HTML file!")
         self.fileComboBox = self.create_combo_box(QtCore.QDir.currentPath())
 
-    # GroupBoxes
+    "GroupBoxes"
     def _filegroupbox(self):
         fileLayout = QtGui.QHBoxLayout()
         fileLayout.addWidget(self.fileComboBox, 4)
@@ -507,7 +557,7 @@ class DjangoFiles(DjangoImages):
         return  self.buttonsGroupBox
 
     def browse(self):
-        # Browse file and choose a default RegEx according to file extension
+        "Browse file and choose a default RegEx according to file extension"
         openedFile = QtGui.QFileDialog.getOpenFileName(self, "Find a CSS or HTML", self.fileComboBox.currentText())
 
         if openedFile:                            #add paths to the fileComboBox
@@ -526,7 +576,7 @@ class DjangoFiles(DjangoImages):
             self.regexLine.setText("Wrong file. Choose a CSS or HTML!")
 
     def djangonize(self):
-        # Method which make files more djangonized!
+        "Method which make files more djangonized!"
         filePath = self.fileComboBox.currentText() # Path to file from fileComboBox
         dirList = self.dir_list()         # DjangonizeImage inherited method which returns folders before static folder
         newFilename = str(randint(0, 9)) + os.path.basename(filePath) # Filename where changes will be saved
@@ -555,8 +605,7 @@ class DjangoFiles(DjangoImages):
             self.djangonizeLine.setText("Wrong file. Choose CSS or HTML!")   # When not CSS or not HTML file is browsed
 
     def open_file(self):
-        # This method open the folder with djangonized files in os explorer and allow choose file for opening
-        # It should be called as object not as function
+        "This method open the folder with djangonized files in os explorer and allow choose file for opening."
         if re.match(r'New\sfilename', self.djangonizeLine.displayText()):
             if os.name == 'nt':
                 os.system(QtGui.QFileDialog().getOpenFileName(self, 'Open Dj-file', '/'.join(
@@ -584,7 +633,7 @@ class DjangoTemplates(DjangoFiles):
         super().__init__()
 
     def _view(self):
-        # Contains information about positioning of elements at window
+        "Contains information about positioning of elements at window"
         self._elements()
 
         self._filegroupbox()                                    # Inherited
@@ -669,7 +718,7 @@ class DjangoTemplates(DjangoFiles):
                                       # urls.py should be created correctly.
 
     def create_find_urls(self):
-        # Searching urls.py. If it isn't found, create it. Parse records with connected views, return them as list.
+        "Searching urls.py. If it isn't found, create it. Parse records with connected views, return them as list."
         dirPath = self.find_views()[1]
         if 'urls.py' not in os.listdir(dirPath):
             with open(os.path.join(dirPath, 'urls.py'), 'w') as urlsfile:
@@ -688,7 +737,7 @@ class DjangoTemplates(DjangoFiles):
                 return urls
 
     def djangonize(self):
-        # Add records for templates which aren't connected to views.py and urls.py (except exceptions)
+        "Add records for templates which aren't connected to views.py and urls.py (except exceptions)"
         tempDict = self.find_templates()
         views, dirPath = self.find_views()        # views = [ 'folder/name.html', ...]
         for key in tempDict:
@@ -716,7 +765,7 @@ class DjangoTemplates(DjangoFiles):
                                     "\nThe app is ready for connection to project's urls.py with include() function!"]))
 
 
-class Main(QtGui.QDialog):
+class Main(QtGui.QWidget):
     """ Start window of the application
     Call the components of the application when buttons are clicking.
 
@@ -730,7 +779,7 @@ class Main(QtGui.QDialog):
         self.trayIcon.show()
 
     def _view(self):
-        # Contains information about positioning of elements at window
+        "Contains information about positioning of elements at window"
         self._main_tabs()
 
         mainLayout = QtGui.QVBoxLayout()
@@ -747,7 +796,7 @@ class Main(QtGui.QDialog):
         self.move(*self.position)
 
     def _main_tabs(self):
-        # List of Main tabs
+        "List of Main tabs"
         self.tabWidget = QtGui.QTabWidget()
         self.tabWidget.addTab(Welcome(), "Welcome")
         self.tabWidget.addTab(DjangoImages(), "Images")
@@ -757,7 +806,7 @@ class Main(QtGui.QDialog):
         return self.tabWidget
 
     def _tray_icon(self):
-        # Create tray icon and link context menu actions to it
+        "Create tray icon and link context menu actions to it"
         self.trayIconMenu = QtGui.QMenu(self)
         self.trayIconMenu.addAction(self.minimizeAction)
         self.trayIconMenu.addAction(self.restoreAction)
@@ -768,18 +817,18 @@ class Main(QtGui.QDialog):
         self.trayIcon.setContextMenu(self.trayIconMenu)
 
     def _tray_icon_actions(self):
-        # Context menu actions for tray icon
+        "Context menu actions for tray icon"
         self.minimizeAction = QtGui.QAction("Minimize", self, triggered=self.hide)
         self.restoreAction = QtGui.QAction("Restore", self, triggered=self.show)
         self.quitAction = QtGui.QAction("Quit", self, triggered=QtGui.qApp.quit)
 
     def double_click(self, event):
-        # Restore window by doubleclick
+        "Restore window by doubleclick"
         if event == QtGui.QSystemTrayIcon.DoubleClick:
             self.show()
 
     def closeEvent(self, event):
-        # Intercepts close event (control panel), hide Main and show icon message
+        "Intercepts close event (control panel), hide Main and show icon message"
         if self.trayIcon.isVisible():
             self.hide()                    #hide Main
             self.trayIcon.showMessage("Tray icon without icon", "Ha-ha, I'm here!")
