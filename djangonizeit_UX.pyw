@@ -28,12 +28,12 @@
     This is an UX (user experience) version of DjangonizeIt application.
     The inheritance structure is less complicated here.
 
-     PyQT Parent |          QtGui.QWidget                  QtGui.QSortFilterProxyModel          QtGui.QDialog
-     Parent      |    Welcome          DjangoImages             SortFilterHistory                   Main
-     1st Child   |                DjangoFiles     History
-     2nd Child   |              DjangoTemplates
+     PyQT Parent |            QtGui.QWidget                                QtGui.QSortFilterProxyModel
+     Parent      |    Welcome     Main      DjangoImages                        SortFilterHistory
+     1st Child   |                    DjangoFiles     History
+     2nd Child   |                  DjangoTemplates
 
-        Class attributes from magic method __call__ is transferred to internal method _view. Most of class attributes
+        Class attributes from magic method __call__ is replaced by internal method _view. Most of class attributes
      from constructor are, also transferred to internal methods and just calling from their constructors. All buttons,
      from constructors, are moved to internal methods too.
         The user interface became more friendly.
@@ -443,7 +443,7 @@ class History(DjangoImages):
                                      QtCore.QDateTime(QtCore.QDate(int(line[2]), int(line[3]), int(line[4])),  # Date
                                                                    QtCore.QTime(int(line[5]), int(line[6]))))  # Time'
         except FileNotFoundError:
-            pass                        # This is right. We just need to avoid the Error if you haven't file for logs.
+            pass                        # This is ok. We just need to avoid the Error if you haven't file for logs.
         return table
 
     def open_folder(self):
@@ -455,13 +455,8 @@ class History(DjangoImages):
         elements = os.listdir(path)
 
         # Block for copykilling
-        currentImages = []
         try:
-            with open(self.database) as f:
-                lines = f.readlines()
-                for line in lines:
-                    line = line.split(',')
-                    currentImages.append(line[0])
+            currentImages = [line.split(',')[0] for line in open(self.database).readlines()] # List of logged images
         except FileNotFoundError:                      #Create the db file if it isn't exist
             f = open(self.database, 'w')
             f.close()
@@ -489,6 +484,7 @@ class History(DjangoImages):
         return self.import_all(os.getcwd())
 
     def refresh_table(self):
+        "Read logs in db and refresh the information in proxyView"
         QtGui.QMessageBox.information(self, "Unready feature",
                                       "The feature isn't ready, restart the program to refresh!")
 
