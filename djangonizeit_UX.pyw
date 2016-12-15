@@ -321,6 +321,7 @@ class History(DjangoImages):
         self.quitButton = self.create_button('Quit', self.quit_app(), tooltip="Close All Windows")
         self.refreshButton = QtGui.QPushButton('Refresh', self)
         self.refreshButton.clicked.connect(self.refresh_table)
+        self.refreshButton.setToolTip('Update the table with current content of the database')
         self.importButton = QtGui.QPushButton('Import All', self)
         self.importButton.clicked.connect(self.import_button)
         self.importButton.setToolTip('Add djangonized links of all files in image folder and its subfolders to database')
@@ -466,27 +467,29 @@ class History(DjangoImages):
             if os.path.isdir(element):
                 self.import_all(os.path.join(path, element))     # Recursive call for subfolder
             else:
-                if element in currentImages:        # Copykiller
-                    continue
-                else:
-                    dirList = self.dir_list(path)
+                try:
+                    if element in currentImages:        # Copykiller
+                        continue
+                    else:
+                        dirList = self.dir_list(path)
 
-                    djangoView = "{% static '" + '/'.join(dirList) + '/' + element + " '%}"  # Djangonized link
+                        djangoView = "{% static '" + '/'.join(dirList) + '/' + element + " '%}"  # Djangonized link
 
-                    # Import element link to the database
-                    with open(self.database, "a") as f:
-                        historyNote = ','.join([element, djangoView, str(self.NOW.year), str(self.NOW.month),
-                                                str(self.NOW.day), str(self.NOW.hour), str(self.NOW.minute)]) + '\n'
-                        f.write(historyNote)
+                        # Import element link to the database
+                        with open(self.database, "a") as f:
+                            historyNote = ','.join([element, djangoView, str(self.NOW.year), str(self.NOW.month),
+                                                    str(self.NOW.day), str(self.NOW.hour), str(self.NOW.minute)]) + '\n'
+                            f.write(historyNote)
+                except UnboundLocalError:               # If method is stopped because the database file isn't exist
+                    self.import_all(path)               # (currentImages isn't referenced in this case), restart method
 
     def import_button(self):
         "Transform the import_all method in the form callable by PyQt button."
         return self.import_all(os.getcwd())
 
     def refresh_table(self):
-        "Read logs in db and refresh the information in proxyView"
-        QtGui.QMessageBox.information(self, "Unready feature",
-                                      "The feature isn't ready, restart the program to refresh!")
+        "Read logs in db file and refresh the proxyModel at proxyView with this information"
+        self.proxyModel.setSourceModel(self.create_log_table())
 
 
 class DjangoFiles(DjangoImages):
