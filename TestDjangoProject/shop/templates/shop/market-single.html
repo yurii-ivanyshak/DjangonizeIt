@@ -1,0 +1,437 @@
+{% extends 'shop/base.html' %}
+{% load staticfiles %}
+
+{% block title %}
+    Market
+{% endblock %}
+
+{% block content %}
+
+	<!-- start main -->
+	<div id="main">
+		<div class="heading-box">
+			<h2>Market</h2>
+			<div class="category-holder slide-block">
+				<a href="#" class="open-close">Select Market Category</a>
+				<div class="block">
+					<div class="category-c">
+						<ul class="category-list">
+							<li><a href="#">Print</a></li>
+							<li><a href="#">3D Graphic</a></li>
+							<li><a href="#">Photography</a></li>
+							<li><a href="#">Vector Graphic</a></li>
+							<li><a href="#">Brochures</a></li>
+							<li><a href="#">Photo Retouching</a></li>
+							<li><a href="#">Typography</a></li>
+						</ul>
+						<a href="categories.html" class="all-categories">All Categories...</a>
+					</div>
+					<div class="category-b"></div>
+				</div>
+			</div>
+			<div class="text-box">
+				<p>Pellentesque fermentum neque vel nisl auctor eget tincidunt mi vehicula.</p>
+			</div>
+		</div>
+		<div class="breadcrumbs-holder">
+			<ul class="breadcrumbs">
+				<li><a href="../">Home</a></li>
+				<li><a href="../market/">Market</a></li>
+				<li><span>Kraken Design Business Card</span></li>
+			</ul>
+			<div class="breadcrumbs-r"></div>
+		</div>
+		<div id="twocolumns">
+			<div id="content">
+				<div class="product-box">
+					<div class="product-holder">
+						<div class="image-holder">
+							<div class="image">
+								<img class="large" src="images/img26.png" alt="image description" width="254" height="161" />
+								<a href="images/img26-2.png" rel="lightbox" class="zoom">zoom</a>
+								<div class="stick">
+									<img src="images/stick-violet.png" alt="image description" width="82" height="82" />
+								</div>
+								<div class="hotspot"></div>
+							</div>
+							<div class="wrap">
+								<strong class="downloads">18 downloads</strong>
+								<ul class="stars">
+									<li><a href="#"><img src="images/star.gif" alt="image description" /></a></li>
+									<li><a href="#"><img src="images/star.gif" alt="image description" /></a></li>
+									<li><a href="#"><img src="images/star02.gif" alt="image description" /></a></li>
+									<li><a href="#"><img src="images/star03.gif" alt="image description" /></a></li>
+									<li><a href="#"><img src="images/star03.gif" alt="image description" /></a></li>
+								</ul>
+							</div>
+						</div>
+						<div class="text-box">
+							<h2>Kraken Design Business Card</h2>
+							<ul class="title-list">
+								<li><img src="images/ico02.gif" alt="image description" width="11" height="11" /><a href="#">29 nov ‘10</a></li>
+								<li><img src="images/ico04.gif" alt="image description" width="9" height="11" /><strong><a href="#">Print</a> / <a href="#">Business Card</a></strong></li>
+								<li><img src="images/ico05.gif" alt="image description" width="11" height="11" /><a href="#">2 reviews</a></li>
+							</ul>
+							<h4>Quick Overview:</h4>
+							<p>Mauris mollis, nisl sit amet varius convallis, dui velit blandit magna, sed egestas neque lorem vehicula odio. Dui velit blandit. Donec ullamcorper, nisi in blandit scelerisque.</p>
+							<a href="#" class="purchase">
+								<span>Purchase</span><em>$14,80</em>
+							</a>
+						</div>
+					</div>
+					<h2>Item Details</h2>
+					<p>Praesent semper, elit quis porta tincidunt, libero tellus auctor odio, a tincidunt ante neque vel orci. Integer non faucibus justo. Morbi arcu mi, varius eu dignissim nec, mattis sit amet dui. Sed at elit justo, ac pellentesque dolor. In sem lorem, sodales vitae semper at, imperdiet nec nibh. Vestibulum consectetur rutrum euismod. Integer convallis nulla sit amet lectus convallis semper. Suspendisse potenti. Curabitur et rhoncus lectus.</p>
+				</div>
+				<div class="comments-holder">
+					<div class="comment-title">
+						<a href="#comment" class="btn-black btn-type ancLinks"><span>Add new review</span></a>
+						<h2>Reviews</h2>
+					</div>
+					<div class="comment-box">
+						<strong class="name">John Doe</strong>
+						<a href="#" class="site">www.john-doe.com</a>
+						<div class="wrap">
+							<div class="image">
+								<img class="large" src="images/img02.jpg" alt="image description" width="101" height="91" />
+								<div class="hotspot"></div>
+							</div>
+							<div class="text-box">
+								<p>Curabitur ornare, tortor id molestie fermentum, odio nibh egestas libero, eu accumsan arcu turpis at orci. Aliquam varius ligula nec tellus ultricies sollicitudin. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Fusce at velit nibh. Integer vehicula ullamcorper tincidunt.</p>
+								<div class="wrap">
+									<a href="#" class="reply">Reply</a>
+									<a href="#" class="report">Report!</a>
+								</div>
+							</div>
+						</div>
+						<span class="added">Comment added on 29 nov ‘10 at 13:02</span>
+					</div>
+					<div class="comment-box">
+						<strong class="name">Andre Talkman</strong>
+						<a href="#" class="site">www.andre-talkman.com</a>
+						<div class="wrap">
+							<div class="image">
+								<img class="large" src="images/img02.jpg" alt="image description" width="101" height="91" />
+								<div class="hotspot"></div>
+							</div>
+							<div class="text-box">
+								<p>Donec leo sapien, vehicula vel dignissim vitae, vulputate ac nulla. Aenean in nunc neque, nec accumsan mi. Integer posuere convallis erat, in ultricies mi fringilla ac. Quisque ultrices neque quis erat molestie sit amet tristique dolor dictum!</p>
+								<div class="wrap">
+									<a href="#" class="reply">Reply</a>
+									<a href="#" class="report">Report!</a>
+								</div>
+							</div>
+						</div>
+						<span class="added">Comment added on 30 nov ‘10 at 16:44</span>
+					</div>
+				</div>
+				<form action="#" class="comment-form" id="comment">
+					<fieldset>
+						<div class="form-box">
+							<h2>New review</h2>
+							<div class="row">
+								<span class="text-wrap"><input type="text" class="text" value="Name" /></span>
+								<span class="text-wrap"><input type="text" class="text" value="E-mail" /></span>
+								<span class="text-wrap"><input type="text" class="text" value="Website" /></span>
+							</div>
+							<div class="textarea">
+								<textarea cols="1" rows="1">Message</textarea>
+							</div>
+							<div class="row">
+								<input type="submit" class="submit" value="+ Add review" />
+								<div class="check-holder">
+									<input type="checkbox" class="checkbox" id="notify" />
+									<label for="notify">Notify me about new comments via e-mail</label>
+								</div>
+							</div>
+						</div>
+					</fieldset>
+				</form>
+			</div>
+			<div id="sidebar">
+				<h2>Recent Views</h2>
+				<div class="side-box">
+					<div class="side-holder">
+						<div class="side-frame">
+							<ul class="view-list">
+								<li class="bubbleInfo">
+									<a href="#" class="trigger"></a>
+									<div class="popup">
+										<h3><a href="market-single.html">14 Boutique</a></h3>
+										<span class="sub-title"><a href="#">Print</a> / <a href="#">Business Card</a></span>
+										<div class="product-holder">
+											<div class="image">
+												<a href="#"><img src="images/bg-image03.jpg" alt="image description" width="180" height="91" /></a>
+												<div class="wrap">
+													<span class="price">Price: $8.80</span>
+													<ul class="stars">
+														<li><a href="#"><img src="images/star.gif" alt="image description" width="15" height="15" /></a></li>
+														<li><a href="#"><img src="images/star.gif" alt="image description" width="15" height="15" /></a></li>
+														<li><a href="#"><img src="images/star.gif" alt="image description" width="15" height="15" /></a></li>
+														<li><a href="#"><img src="images/star.gif" alt="image description" width="15" height="15" /></a></li>
+														<li><a href="#"><img src="images/star03.gif" alt="image description" width="15" height="15" /></a></li>
+													</ul>
+												</div>
+											</div>
+										</div>
+									</div>
+								</li>
+								<li class="bubbleInfo">
+									<a href="#" class="trigger"></a>
+									<div class="popup">
+										<h3><a href="market-single.html">14 Boutique</a></h3>
+										<span class="sub-title"><a href="#">Print</a> / <a href="#">Business Card</a></span>
+										<div class="product-holder">
+											<div class="image">
+												<a href="#"><img src="images/bg-image03.jpg" alt="image description" width="180" height="91" /></a>
+												<div class="wrap">
+													<span class="price">Price: $8.80</span>
+													<ul class="stars">
+														<li><a href="#"><img src="images/star.gif" alt="image description" width="15" height="15" /></a></li>
+														<li><a href="#"><img src="images/star.gif" alt="image description" width="15" height="15" /></a></li>
+														<li><a href="#"><img src="images/star.gif" alt="image description" width="15" height="15" /></a></li>
+														<li><a href="#"><img src="images/star.gif" alt="image description" width="15" height="15" /></a></li>
+														<li><a href="#"><img src="images/star03.gif" alt="image description" width="15" height="15" /></a></li>
+													</ul>
+												</div>
+											</div>
+										</div>
+									</div>
+								</li>
+								<li class="bubbleInfo">
+									<a href="#" class="trigger"></a>
+									<div class="popup">
+										<h3><a href="market-single.html">14 Boutique</a></h3>
+										<span class="sub-title"><a href="#">Print</a> / <a href="#">Business Card</a></span>
+										<div class="product-holder">
+											<div class="image">
+												<a href="#"><img src="images/bg-image03.jpg" alt="image description" width="180" height="91" /></a>
+												<div class="wrap">
+													<span class="price">Price: $8.80</span>
+													<ul class="stars">
+														<li><a href="#"><img src="images/star.gif" alt="image description" width="15" height="15" /></a></li>
+														<li><a href="#"><img src="images/star.gif" alt="image description" width="15" height="15" /></a></li>
+														<li><a href="#"><img src="images/star.gif" alt="image description" width="15" height="15" /></a></li>
+														<li><a href="#"><img src="images/star.gif" alt="image description" width="15" height="15" /></a></li>
+														<li><a href="#"><img src="images/star03.gif" alt="image description" width="15" height="15" /></a></li>
+													</ul>
+												</div>
+											</div>
+										</div>
+									</div>
+								</li>
+								<li class="bubbleInfo">
+									<a href="#" class="trigger"></a>
+									<div class="popup">
+										<h3><a href="market-single.html">14 Boutique</a></h3>
+										<span class="sub-title"><a href="#">Print</a> / <a href="#">Business Card</a></span>
+										<div class="product-holder">
+											<div class="image">
+												<a href="#"><img src="images/bg-image03.jpg" alt="image description" width="180" height="91" /></a>
+												<div class="wrap">
+													<span class="price">Price: $8.80</span>
+													<ul class="stars">
+														<li><a href="#"><img src="images/star.gif" alt="image description" width="15" height="15" /></a></li>
+														<li><a href="#"><img src="images/star.gif" alt="image description" width="15" height="15" /></a></li>
+														<li><a href="#"><img src="images/star.gif" alt="image description" width="15" height="15" /></a></li>
+														<li><a href="#"><img src="images/star.gif" alt="image description" width="15" height="15" /></a></li>
+														<li><a href="#"><img src="images/star03.gif" alt="image description" width="15" height="15" /></a></li>
+													</ul>
+												</div>
+											</div>
+										</div>
+									</div>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+				<h3>Top Purchases</h3>
+				<div class="side-box">
+					<div class="side-holder">
+						<div class="side-frame">
+							<ul class="view-list">
+								<li class="bubbleInfo">
+									<a href="#" class="trigger"></a>
+									<div class="popup">
+										<h3><a href="market-single.html">14 Boutique</a></h3>
+										<span class="sub-title"><a href="#">Print</a> / <a href="#">Business Card</a></span>
+										<div class="product-holder">
+											<div class="image">
+												<a href="#"><img src="images/bg-image03.jpg" alt="image description" width="180" height="91" /></a>
+												<div class="wrap">
+													<span class="price">Price: $8.80</span>
+													<ul class="stars">
+														<li><a href="#"><img src="images/star.gif" alt="image description" width="15" height="15" /></a></li>
+														<li><a href="#"><img src="images/star.gif" alt="image description" width="15" height="15" /></a></li>
+														<li><a href="#"><img src="images/star.gif" alt="image description" width="15" height="15" /></a></li>
+														<li><a href="#"><img src="images/star.gif" alt="image description" width="15" height="15" /></a></li>
+														<li><a href="#"><img src="images/star03.gif" alt="image description" width="15" height="15" /></a></li>
+													</ul>
+												</div>
+											</div>
+										</div>
+									</div>
+								</li>
+								<li class="bubbleInfo">
+									<a href="#" class="trigger"></a>
+									<div class="popup">
+										<h3><a href="market-single.html">14 Boutique</a></h3>
+										<span class="sub-title"><a href="#">Print</a> / <a href="#">Business Card</a></span>
+										<div class="product-holder">
+											<div class="image">
+												<a href="#"><img src="images/bg-image03.jpg" alt="image description" width="180" height="91" /></a>
+												<div class="wrap">
+													<span class="price">Price: $8.80</span>
+													<ul class="stars">
+														<li><a href="#"><img src="images/star.gif" alt="image description" width="15" height="15" /></a></li>
+														<li><a href="#"><img src="images/star.gif" alt="image description" width="15" height="15" /></a></li>
+														<li><a href="#"><img src="images/star.gif" alt="image description" width="15" height="15" /></a></li>
+														<li><a href="#"><img src="images/star.gif" alt="image description" width="15" height="15" /></a></li>
+														<li><a href="#"><img src="images/star03.gif" alt="image description" width="15" height="15" /></a></li>
+													</ul>
+												</div>
+											</div>
+										</div>
+									</div>
+								</li>
+								<li class="bubbleInfo">
+									<a href="#" class="trigger"></a>
+									<div class="popup">
+										<h3><a href="market-single.html">14 Boutique</a></h3>
+										<span class="sub-title"><a href="#">Print</a> / <a href="#">Business Card</a></span>
+										<div class="product-holder">
+											<div class="image">
+												<a href="#"><img src="images/bg-image03.jpg" alt="image description" width="180" height="91" /></a>
+												<div class="wrap">
+													<span class="price">Price: $8.80</span>
+													<ul class="stars">
+														<li><a href="#"><img src="images/star.gif" alt="image description" width="15" height="15" /></a></li>
+														<li><a href="#"><img src="images/star.gif" alt="image description" width="15" height="15" /></a></li>
+														<li><a href="#"><img src="images/star.gif" alt="image description" width="15" height="15" /></a></li>
+														<li><a href="#"><img src="images/star.gif" alt="image description" width="15" height="15" /></a></li>
+														<li><a href="#"><img src="images/star03.gif" alt="image description" width="15" height="15" /></a></li>
+													</ul>
+												</div>
+											</div>
+										</div>
+									</div>
+								</li>
+								<li class="bubbleInfo">
+									<a href="#" class="trigger"></a>
+									<div class="popup">
+										<h3><a href="market-single.html">14 Boutique</a></h3>
+										<span class="sub-title"><a href="#">Print</a> / <a href="#">Business Card</a></span>
+										<div class="product-holder">
+											<div class="image">
+												<a href="#"><img src="images/bg-image03.jpg" alt="image description" width="180" height="91" /></a>
+												<div class="wrap">
+													<span class="price">Price: $8.80</span>
+													<ul class="stars">
+														<li><a href="#"><img src="images/star.gif" alt="image description" width="15" height="15" /></a></li>
+														<li><a href="#"><img src="images/star.gif" alt="image description" width="15" height="15" /></a></li>
+														<li><a href="#"><img src="images/star.gif" alt="image description" width="15" height="15" /></a></li>
+														<li><a href="#"><img src="images/star.gif" alt="image description" width="15" height="15" /></a></li>
+														<li><a href="#"><img src="images/star03.gif" alt="image description" width="15" height="15" /></a></li>
+													</ul>
+												</div>
+											</div>
+										</div>
+									</div>
+								</li>
+								<li class="bubbleInfo">
+									<a href="#" class="trigger"></a>
+									<div class="popup">
+										<h3><a href="market-single.html">14 Boutique</a></h3>
+										<span class="sub-title"><a href="#">Print</a> / <a href="#">Business Card</a></span>
+										<div class="product-holder">
+											<div class="image">
+												<a href="#"><img src="images/bg-image03.jpg" alt="image description" width="180" height="91" /></a>
+												<div class="wrap">
+													<span class="price">Price: $8.80</span>
+													<ul class="stars">
+														<li><a href="#"><img src="images/star.gif" alt="image description" width="15" height="15" /></a></li>
+														<li><a href="#"><img src="images/star.gif" alt="image description" width="15" height="15" /></a></li>
+														<li><a href="#"><img src="images/star.gif" alt="image description" width="15" height="15" /></a></li>
+														<li><a href="#"><img src="images/star.gif" alt="image description" width="15" height="15" /></a></li>
+														<li><a href="#"><img src="images/star03.gif" alt="image description" width="15" height="15" /></a></li>
+													</ul>
+												</div>
+											</div>
+										</div>
+									</div>
+								</li>
+								<li class="bubbleInfo">
+									<a href="#" class="trigger"></a>
+									<div class="popup">
+										<h3><a href="market-single.html">14 Boutique</a></h3>
+										<span class="sub-title"><a href="#">Print</a> / <a href="#">Business Card</a></span>
+										<div class="product-holder">
+											<div class="image">
+												<a href="#"><img src="images/bg-image03.jpg" alt="image description" width="180" height="91" /></a>
+												<div class="wrap">
+													<span class="price">Price: $8.80</span>
+													<ul class="stars">
+														<li><a href="#"><img src="images/star.gif" alt="image description" width="15" height="15" /></a></li>
+														<li><a href="#"><img src="images/star.gif" alt="image description" width="15" height="15" /></a></li>
+														<li><a href="#"><img src="images/star.gif" alt="image description" width="15" height="15" /></a></li>
+														<li><a href="#"><img src="images/star.gif" alt="image description" width="15" height="15" /></a></li>
+														<li><a href="#"><img src="images/star03.gif" alt="image description" width="15" height="15" /></a></li>
+													</ul>
+												</div>
+											</div>
+										</div>
+									</div>
+								</li>
+								<li class="bubbleInfo">
+									<a href="#" class="trigger"></a>
+									<div class="popup">
+										<h3><a href="market-single.html">14 Boutique</a></h3>
+										<span class="sub-title"><a href="#">Print</a> / <a href="#">Business Card</a></span>
+										<div class="product-holder">
+											<div class="image">
+												<a href="#"><img src="images/bg-image03.jpg" alt="image description" width="180" height="91" /></a>
+												<div class="wrap">
+													<span class="price">Price: $8.80</span>
+													<ul class="stars">
+														<li><a href="#"><img src="images/star.gif" alt="image description" width="15" height="15" /></a></li>
+														<li><a href="#"><img src="images/star.gif" alt="image description" width="15" height="15" /></a></li>
+														<li><a href="#"><img src="images/star.gif" alt="image description" width="15" height="15" /></a></li>
+														<li><a href="#"><img src="images/star.gif" alt="image description" width="15" height="15" /></a></li>
+														<li><a href="#"><img src="images/star03.gif" alt="image description" width="15" height="15" /></a></li>
+													</ul>
+												</div>
+											</div>
+										</div>
+									</div>
+								</li>
+								<li class="bubbleInfo">
+									<a href="#" class="trigger"></a>
+									<div class="popup">
+										<h3><a href="market-single.html">14 Boutique</a></h3>
+										<span class="sub-title"><a href="#">Print</a> / <a href="#">Business Card</a></span>
+										<div class="product-holder">
+											<div class="image">
+												<a href="#"><img src="images/bg-image03.jpg" alt="image description" width="180" height="91" /></a>
+												<div class="wrap">
+													<span class="price">Price: $8.80</span>
+													<ul class="stars">
+														<li><a href="#"><img src="images/star.gif" alt="image description" width="15" height="15" /></a></li>
+														<li><a href="#"><img src="images/star.gif" alt="image description" width="15" height="15" /></a></li>
+														<li><a href="#"><img src="images/star.gif" alt="image description" width="15" height="15" /></a></li>
+														<li><a href="#"><img src="images/star.gif" alt="image description" width="15" height="15" /></a></li>
+														<li><a href="#"><img src="images/star03.gif" alt="image description" width="15" height="15" /></a></li>
+													</ul>
+												</div>
+											</div>
+										</div>
+									</div>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- end main -->
+{% endblock %}
