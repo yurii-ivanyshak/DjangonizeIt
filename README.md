@@ -26,7 +26,7 @@ The purpose of this application is to simplify work with images and templates fo
            (editable).
         The application is created in object-oriented style.
     -----------------------------------------------------------------
-    This is an UX (user experience) version of DjangonizeIt application.
+    The UX (user experience) version of DjangonizeIt application is a main now.
     The inheritance structure is less complicated here.
 
      PyQT Parent |            QtGui.QWidget                                QtGui.QSortFilterProxyModel
@@ -40,3 +40,4 @@ The purpose of this application is to simplify work with images and templates fo
         The user interface became more friendly.
  
  * .pyw extention allows to use file as exective at Windows. Change the extention to .py for using at Linux
+ * UX version is strongly recommended
