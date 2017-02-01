@@ -2,6 +2,7 @@
 A single-file program to simplify work with static files for Django developers
 
 The purpose of this application is to simplify work with images and templates for Django developers.
+
         For successful using, you should install the app into "images" folder inside the "static" folder of your
     django project (../static/../images/). This solution simultaneously supporting the recommended file
     structure of django projects and allows to avoid additional user and program activities related to path setting
@@ -34,8 +35,8 @@ The purpose of this application is to simplify work with images and templates fo
      2nd Child   |                  DjangoTemplates
 
         Class attributes from magic method __call__ is replaced by internal method _view. Most of class attributes
-     from constructor are, also transferred to internal methods and just calling from their constructors. All buttons,
-     from constructors, are moved to internal methods too.
+     from constructor are, also transferred to internal methods and just calling from their constructors. 
+     All buttons from constructors, are moved to internal methods too.
         The user interface became more friendly.
  
  * .pyw extention allows to use file as exective at Windows. Change the extention to .py for using at Linux
