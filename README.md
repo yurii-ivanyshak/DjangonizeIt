@@ -11,14 +11,15 @@ The purpose of this application is to simplify work with images and templates fo
            downloading to images folder as default, but user can choose any its subfolder as allocation for image.
         2. Search and replace image links on django-links at frontend (HTML, CSS) files. Searching is RegExp driven.
            The application have default regular expressions for CSS and HTML files, which can be changed by user.
-           When you run the djangonization process for the file, it isn't replaced. The app creates a copy of the file
-           at folder with original. Copy's name is forming as a "[0-9]old name", which allow simplifying it searching at
-           folder (it was at the top or bottom). Also, created file can be opened from the program by os explorer.
-        3. Add records for templates to views.py and connect their views to urls.py (inside the django app folder). If
-           urls.py isn't exist inside the django app folder, the program will create it. After the operation performing,
-           the django app is ready to be connected to urls.py of django-project thorough include() function. The app
-           creates views and urls only for django templates (html files) except exception list(base.html and index.html)
-           (editable).
+           When you run the djangonization process for the file, it isn't replaced. The app creates a copy of the 
+           file at folder with original. Copy's name is forming as a "[0-9]old name", which allow simplifying it 
+           searching at folder (it was at the top or bottom). Also, created file can be opened from the program by 
+           os explorer.
+        3. Add records for templates to views.py and connect their views to urls.py (inside the django app folder). 
+           If urls.py isn't exist inside the django app folder, the program will create it. After the operation 
+           performing, the django app is ready to be connected to urls.py of django-project thorough include() 
+           function. The app creates views and urls only for django templates (html files) except exception list 
+           (base.html and index.html) (editable).
         The application is created in object-oriented style.
     -----------------------------------------------------------------
     The UX (user experience) version of DjangonizeIt application has the next inheritance structure:
@@ -33,14 +34,19 @@ The purpose of this application is to simplify work with images and templates fo
      All buttons from constructors are moved to internal methods too.
         The user interface became more friendly.
 
+***
+
 Installing
 
-    1. Install PyQt5:
+   1. Install PyQt5: 
         with pip and requirements.txt file:
-            pip install -r requirements.txt
+        ```
+        pip install -r requirements.txt
+        ```
 
         or use Anaconda for Python 3 version:
-            https://www.continuum.io/downloads
+        
+        https://www.continuum.io/downloads
 
     2. Move djangonizeit_UX.pyw into "images" folder inside the "static" folder of your
     django project (../static/../images/). (This solution simultaneously supporting the recommended file
