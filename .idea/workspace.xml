@@ -1,7 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="9f9bad04-a054-4c7f-bb26-ae6358365376" name="Default" comment="" />
+    <list default="true" id="9f9bad04-a054-4c7f-bb26-ae6358365376" name="Default" comment="">
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/DjangonizeIt.iml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/modules.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/vcs.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/djangonizeit_UX.pyw" afterPath="$PROJECT_DIR$/djangonizeit_UX.pyw" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/requirements.txt" afterPath="$PROJECT_DIR$/requirements.txt" />
+    </list>
     <ignored path="DjangonizeIt.iws" />
     <ignored path=".idea/workspace.xml" />
     <ignored path=".idea/dataSources.local.xml" />
@@ -15,7 +23,7 @@
   <component name="ChangesViewManager" flattened_view="true" show_ignored="false" />
   <component name="CoverageDataManager">
     <SUITE FILE_PATH="coverage/DjangonizeIt$djangonizeit_compact_pyw.coverage" NAME="djangonizeit_compact.pyw Coverage Results" MODIFIED="1479552363502" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/DjangonizeIt$djangonizeit_UX_pyw.coverage" NAME="djangonizeit_UX.pyw Coverage Results" MODIFIED="1481875139879" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/DjangonizeIt$djangonizeit_UX_pyw.coverage" NAME="djangonizeit_UX.pyw Coverage Results" MODIFIED="1499501317267" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/DjangonizeIt$djangonizeit_pyw.coverage" NAME="djangonizeit.pyw Coverage Results" MODIFIED="1481823924565" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
   <component name="CreatePatchCommitExecutor">
@@ -27,23 +35,31 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="djangonizeit.pyw" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/djangonizeit.pyw">
+      <file leaf-file-name="djangonizeit_UX.pyw" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/djangonizeit_UX.pyw">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3825">
-              <caret line="231" column="0" selection-start-line="231" selection-start-column="0" selection-end-line="231" selection-end-column="0" />
-              <folding>
-                <element signature="e#5380#5389#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="561">
+              <caret line="33" column="24" selection-start-line="33" selection-start-column="24" selection-end-line="33" selection-end-column="24" />
+              <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="djangonizeit_UX.pyw" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/djangonizeit_UX.pyw">
+      <file leaf-file-name="requirements.txt" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/requirements.txt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="582">
-              <caret line="475" column="11" selection-start-line="475" selection-start-column="11" selection-end-line="475" selection-end-column="11" />
+            <state relative-caret-position="17">
+              <caret line="1" column="13" selection-start-line="1" selection-start-column="13" selection-end-line="1" selection-end-column="13" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name=".gitignore" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/.gitignore">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="0">
+              <caret line="0" column="5" selection-start-line="0" selection-start-column="5" selection-end-line="0" selection-end-column="5" />
               <folding />
             </state>
           </provider>
@@ -70,6 +86,7 @@
         <option value="$PROJECT_DIR$/djangonizeit_compact.pyw" />
         <option value="$PROJECT_DIR$/djangonizeit.pyw" />
         <option value="$PROJECT_DIR$/README.md" />
+        <option value="$PROJECT_DIR$/requirements.txt" />
         <option value="$PROJECT_DIR$/djangonizeit_UX.pyw" />
       </list>
     </option>
@@ -82,7 +99,8 @@
   </component>
   <component name="ProjectFrameBounds">
     <option name="x" value="-8" />
-    <option name="width" value="1366" />
+    <option name="y" value="-8" />
+    <option name="width" value="1382" />
     <option name="height" value="754" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
@@ -110,6 +128,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
@@ -131,13 +150,14 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../../PyShop" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="js-jscs-nodeInterpreter" value="C:\Program Files\nodejs\node.exe" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+    <property name="settings.editor.splitter.proportion" value="0.2" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -169,9 +189,9 @@
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
-      <option name="SDK_HOME" value="" />
+      <option name="SDK_HOME" value="D:\Install\Anaconda\python.exe" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
+      <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="DjangonizeIt" />
@@ -515,28 +535,28 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="0" width="1366" height="754" extended-state="1" />
-    <editor active="true" />
+    <frame x="-8" y="-8" width="1382" height="754" extended-state="6" />
+    <editor active="false" />
     <layout>
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.26962963" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2693997" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.36024845" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39906833" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.36024845" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32919255" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Concurrent Activities Diagram" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32919255" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39906833" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="Vcs.Log.UiProperties">
@@ -569,16 +589,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/djangonizeit.pyw">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3825">
-          <caret line="231" column="0" selection-start-line="231" selection-start-column="0" selection-end-line="231" selection-end-column="0" />
-          <folding>
-            <element signature="e#5380#5389#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/djangonizeit_UX.pyw">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -599,9 +609,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="3825">
           <caret line="231" column="0" selection-start-line="231" selection-start-column="0" selection-end-line="231" selection-end-column="0" />
-          <folding>
-            <element signature="e#5380#5389#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -625,9 +633,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="3825">
           <caret line="231" column="0" selection-start-line="231" selection-start-column="0" selection-end-line="231" selection-end-column="0" />
-          <folding>
-            <element signature="e#5380#5389#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -651,9 +657,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2397">
           <caret line="147" column="26" selection-start-line="147" selection-start-column="26" selection-end-line="147" selection-end-column="26" />
-          <folding>
-            <element signature="e#5380#5389#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -677,9 +681,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2397">
           <caret line="147" column="26" selection-start-line="147" selection-start-column="26" selection-end-line="147" selection-end-column="26" />
-          <folding>
-            <element signature="e#5380#5389#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -703,9 +705,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2397">
           <caret line="147" column="26" selection-start-line="147" selection-start-column="26" selection-end-line="147" selection-end-column="26" />
-          <folding>
-            <element signature="e#5380#5389#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -721,9 +721,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2397">
           <caret line="147" column="26" selection-start-line="147" selection-start-column="26" selection-end-line="147" selection-end-column="26" />
-          <folding>
-            <element signature="e#5380#5389#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -739,9 +737,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2397">
           <caret line="147" column="26" selection-start-line="147" selection-start-column="26" selection-end-line="147" selection-end-column="26" />
-          <folding>
-            <element signature="e#5380#5389#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -757,9 +753,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2397">
           <caret line="147" column="26" selection-start-line="147" selection-start-column="26" selection-end-line="147" selection-end-column="26" />
-          <folding>
-            <element signature="e#5380#5389#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -775,9 +769,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2397">
           <caret line="147" column="26" selection-start-line="147" selection-start-column="26" selection-end-line="147" selection-end-column="26" />
-          <folding>
-            <element signature="e#5380#5389#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -793,9 +785,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2397">
           <caret line="147" column="26" selection-start-line="147" selection-start-column="26" selection-end-line="147" selection-end-column="26" />
-          <folding>
-            <element signature="e#5380#5389#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -811,9 +801,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="8313">
           <caret line="495" column="29" selection-start-line="495" selection-start-column="29" selection-end-line="495" selection-end-column="29" />
-          <folding>
-            <element signature="e#5380#5389#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -829,9 +817,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="8313">
           <caret line="495" column="29" selection-start-line="495" selection-start-column="29" selection-end-line="495" selection-end-column="29" />
-          <folding>
-            <element signature="e#5380#5389#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -847,9 +833,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="8313">
           <caret line="495" column="29" selection-start-line="495" selection-start-column="29" selection-end-line="495" selection-end-column="29" />
-          <folding>
-            <element signature="e#5380#5389#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -865,9 +849,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="8313">
           <caret line="495" column="29" selection-start-line="495" selection-start-column="29" selection-end-line="495" selection-end-column="29" />
-          <folding>
-            <element signature="e#5380#5389#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -883,9 +865,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="8313">
           <caret line="495" column="29" selection-start-line="495" selection-start-column="29" selection-end-line="495" selection-end-column="29" />
-          <folding>
-            <element signature="e#5380#5389#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -901,9 +881,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="8313">
           <caret line="495" column="29" selection-start-line="495" selection-start-column="29" selection-end-line="495" selection-end-column="29" />
-          <folding>
-            <element signature="e#5380#5389#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -919,9 +897,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="e#5380#5389#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -929,9 +905,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="8313">
           <caret line="495" column="29" selection-start-line="495" selection-start-column="29" selection-end-line="495" selection-end-column="29" />
-          <folding>
-            <element signature="e#5380#5389#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -947,9 +921,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="e#5380#5389#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -957,9 +929,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="7888">
           <caret line="470" column="0" selection-start-line="470" selection-start-column="0" selection-end-line="470" selection-end-column="0" />
-          <folding>
-            <element signature="e#5380#5389#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -975,9 +945,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="e#5380#5389#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -986,9 +954,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="3825">
           <caret line="231" column="0" selection-start-line="231" selection-start-column="0" selection-end-line="231" selection-end-column="0" />
-          <folding>
-            <element signature="e#5380#5389#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1000,10 +966,26 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="5" selection-start-line="0" selection-start-column="5" selection-end-line="0" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/requirements.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="1" column="13" selection-start-line="1" selection-start-column="13" selection-end-line="1" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/djangonizeit_UX.pyw">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="582">
-          <caret line="475" column="11" selection-start-line="475" selection-start-column="11" selection-end-line="475" selection-end-column="11" />
+        <state relative-caret-position="561">
+          <caret line="33" column="24" selection-start-line="33" selection-start-column="24" selection-end-line="33" selection-end-column="24" />
           <folding />
         </state>
       </provider>
