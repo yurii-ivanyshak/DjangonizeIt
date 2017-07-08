@@ -39,6 +39,7 @@ The purpose of this application is to simplify work with images and templates fo
 Installing
 
    1. Install PyQt5: 
+   
         with pip and requirements.txt file:
         ```
         pip install -r requirements.txt
