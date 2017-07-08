@@ -13,7 +13,7 @@ The purpose of this application is to simplify work with images and templates fo
            simplification of work with logs is realised (Also, you can log all existing images). It supports sorting
            by name/django link/date. Also, searching can be performed by normal and RegEx strings. The image is
            downloading to images folder as default, but user can choose any its subfolder as allocation for image.
-        2. Search and replacement image links on django-links at frontend (HTML, CSS) files. Search is RegEx driven.
+        2. Search and replace image links on django-links at frontend (HTML, CSS) files. Searching is RegExp driven.
            The application have default regular expressions for CSS and HTML files, which can be changed by user (this
            is necessary for cases when the name of folder with images isn't "images").
            When you run the djangonization process for the file, it isn't replaced. The app creates a copy of the file
@@ -26,8 +26,7 @@ The purpose of this application is to simplify work with images and templates fo
            (editable).
         The application is created in object-oriented style.
     -----------------------------------------------------------------
-    The UX (user experience) version of DjangonizeIt application is a main now.
-    The inheritance structure is less complicated here.
+    The UX (user experience) version of DjangonizeIt application has the next inheritance structure:
 
      PyQT Parent |            QtGui.QWidget                                QtGui.QSortFilterProxyModel
      Parent      |    Welcome     Main      DjangoImages                        SortFilterHistory
@@ -36,8 +35,7 @@ The purpose of this application is to simplify work with images and templates fo
 
         Class attributes from magic method __call__ is replaced by internal method _view. Most of class attributes
      from constructor are, also transferred to internal methods and just calling from their constructors. 
-     All buttons from constructors, are moved to internal methods too.
+     All buttons from constructors are moved to internal methods too.
         The user interface became more friendly.
  
- * .pyw extention allows to use file as exective at Windows. Change the extention to .py for using at Linux
- * UX version is strongly recommended
+ * .pyw extention allows to use file as exective in Windows. Change the extention to .py for using in Linux
